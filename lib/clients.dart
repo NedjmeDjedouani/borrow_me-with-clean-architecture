@@ -84,7 +84,7 @@ class _ClientsState extends State<Clients> {
                                                           FontWeight.w500),
                                                 ),
                                                 Text(
-                                                  c.listofclients[idx].lastname,
+                                                  c.listofclients[idx].balance.toString(),
                                                   style: TextStyle(
                                                       height: 1.5,
                                                       color: Colors.white,
@@ -103,9 +103,7 @@ class _ClientsState extends State<Clients> {
                                     color: Colors.grey[600].withOpacity(0.7),
                                     icon: Icons.edit,
                                     onTap: () {
-                                      Get.to(() => AddClient(),
-                                          arguments:
-                                              c.listofclients.elementAt(idx));
+                                      Get.to(() => AddClient(),arguments: c.listofclients[idx]);
                                     },
                                   )
                                 ],

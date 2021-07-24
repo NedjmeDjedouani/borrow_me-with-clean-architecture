@@ -9,7 +9,7 @@ class Client {
   Client.withid(this._id,this._firstname,this._lastname,this._phonenumber,this._balance);
   Client.frommap(Map<String, dynamic> map){
     this._firstname=map['firstname'];
-    this._lastname=map['firstname'];
+    this._lastname=map['lastname'];
     this._id=map['id'];
     this._balance=map['balance'];
     this._phonenumber=map['phonenumber'];
@@ -18,8 +18,8 @@ class Client {
 
 
   Map<String, dynamic> tomap() => {
-        "id": this._id,
-        'balance': this._balance,
+        "id": this.id,
+        'balance': this.balance,
         'firstname': this.firstname,
         'lastname': this.lastname,
         'phonenumber': this.phonenumber

@@ -8,36 +8,16 @@ import 'package:test_app/utils/utils.dart';
 
 class ProductsController extends GetxController {
   List<Product> suggestions = [];
-  String inputproductname, inputproductbarcode, inputproductprice;
   RxList<Product> listofproducts = <Product>[].obs;
-  final GlobalKey<FormState> globalformkey = GlobalKey<FormState>();
-  TextEditingController barcodecontroller=TextEditingController(),
-      productnamecontroller=TextEditingController(),
-      pricecontroller=TextEditingController();
   DbHelper dbHelper = DbHelper();
-  Product selectedproduct;
   @override
   onInit() {
+
    getallproducts();
    super.onInit();
   }
 
-  String namevalidator(String name) => name.length > 40 ? 'more than 40 characters' : null;
 
-  String barcodevalidator(String name) {
-    String pattern=r'^[0-9]+$';
-
-    return name.length > 15 ? 'more than 15 characters': null;
-  }
-
-  String pricevalidator(String price) {
-    if (!Utils.isNumeric(price)) {
-      return 'this field should be a number';
-    } else if (price.length > 15) {
-      return 'this number should not exceed 15 digits';
-    }
-    else return null;
-  }
 
   getallproducts() {
     dbHelper
@@ -81,6 +61,8 @@ class ProductsController extends GetxController {
 
   editproduct(Product product)
   {
+   int idx=listofproducts.indexWhere((element) => element.id==product.id);
+   listofproducts[idx]=product;
     dbHelper.updateproduct(product);
   }
 }
