@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:test_app/barcode_icons.dart';
-import 'package:test_app/models/productscontroller.dart';
 import 'package:test_app/productvalidationform.dart';
-import 'models/product.dart';
 
 
 class Addproduct extends StatelessWidget {
-  ProductValidationForm c=Get.put(ProductValidationForm());
+  final ProductValidationForm c=Get.put(ProductValidationForm());
 
   @override
   Widget build(BuildContext context) {

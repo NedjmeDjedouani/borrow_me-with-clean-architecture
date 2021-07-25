@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:test_app/addproduct.dart';
-
 import 'models/productscontroller.dart';
 
 class Products extends StatelessWidget {

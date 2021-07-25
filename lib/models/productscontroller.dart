@@ -1,10 +1,7 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:get/get.dart';
 import 'package:test_app/utils/dbhelper.dart';
 import 'package:test_app/models/product.dart';
-import 'package:test_app/utils/utils.dart';
 
 class ProductsController extends GetxController {
   List<Product> suggestions = [];
@@ -12,12 +9,9 @@ class ProductsController extends GetxController {
   DbHelper dbHelper = DbHelper();
   @override
   onInit() {
-
    getallproducts();
    super.onInit();
   }
-
-
 
   getallproducts() {
     dbHelper
@@ -32,12 +26,11 @@ class ProductsController extends GetxController {
 
   removeproduct(Product product) {
     dbHelper.removeproduct(product).then((value) {
-      var rows = value;
-      if (rows > 0) {
-        if (listofproducts.remove(product)) {
-          getallproducts();
+      if (value > 0) {
+        //  int idx=listofproducts.indexWhere((element) => element.id==product.id);
+        //  listofproducts.removeAt(idx);
+          listofproducts.remove(product);
         }
-      }
     });
   }
 

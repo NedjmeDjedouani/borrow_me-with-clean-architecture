@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:test_app/utils/dbhelper.dart';
 import 'package:get/get.dart';
 import 'package:test_app/models/orderscontroller.dart';
 import 'package:test_app/models/product.dart';
@@ -12,8 +11,7 @@ import 'models/order.dart';
 import 'models/productscontroller.dart';
 
 class Addorder extends StatelessWidget {
-  DbHelper dbhelper = DbHelper();
-  ProductsController pc = Get.put(ProductsController());
+final  ProductsController pc = Get.put(ProductsController());
   final Ordercontroller ordercontroller=Get.put(Ordercontroller());
   @override
   Widget build(BuildContext context) {

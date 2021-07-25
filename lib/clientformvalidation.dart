@@ -2,8 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:test_app/models/client.dart';
-
-import 'clients.dart';
 import 'models/clientcontroller.dart';
 
 class ClientFormValidation extends GetxController {
@@ -40,7 +38,6 @@ class ClientFormValidation extends GetxController {
     super.onInit();
   }
 
-
   static String namevalidator(String name) =>
       name.length > 40 ? 'more than 40 characters' : null;
 
@@ -50,9 +47,15 @@ class ClientFormValidation extends GetxController {
   static String phonevalidator(String phonenumber) {
     final String pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
     final RegExp regExp = RegExp(pattern);
-    return phonenumber.isNotEmpty && regExp.hasMatch(phonenumber)
-        ? null
-        : "phone number is not valid";
+
+    if (phonenumber.isEmpty)
+      {
+        return null;
+      }
+    else
+      {
+       return regExp.hasMatch(phonenumber) ? null : "phone number is not valid";
+      }
   }
 
   void isclientformvalid() {

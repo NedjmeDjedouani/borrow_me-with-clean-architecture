@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/clientformvalidation.dart';
-import 'package:test_app/models/clientcontroller.dart';
 import 'package:get/get.dart';
-import 'package:test_app/models/orderscontroller.dart';
-
-import 'clients.dart';
-import 'models/client.dart';
 
 class AddClient extends StatelessWidget {
-  ClientFormValidation cfv=Get.put(ClientFormValidation());
+ final ClientFormValidation cfv=Get.put(ClientFormValidation());
 
   @override
   Widget build(BuildContext context) {

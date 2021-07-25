@@ -5,8 +5,6 @@ import 'package:get/get.dart';
 import 'package:test_app/addorder.dart';
 import 'package:test_app/models/clientcontroller.dart';
 import 'addclient.dart';
-import 'models/client.dart';
-import 'models/orderscontroller.dart';
 
 class Clients extends StatefulWidget {
   @override

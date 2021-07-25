@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:test_app/utils/dbhelper.dart';
-import '../clients.dart';
 import 'client.dart';
 
 class Clientscontroller extends GetxController {
