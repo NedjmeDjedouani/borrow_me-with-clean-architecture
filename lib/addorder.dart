@@ -4,18 +4,17 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
-import 'package:test_app/models/orderscontroller.dart';
+import 'package:test_app/controllers/orderscontroller.dart';
 import 'package:test_app/models/product.dart';
 import 'package:test_app/utils/utils.dart';
 import 'models/order.dart';
-import 'models/productscontroller.dart';
-
+import 'controllers/productscontroller.dart';
+import 'package:intl/intl.dart';
 class Addorder extends StatelessWidget {
-final  ProductsController pc = Get.put(ProductsController());
-  final Ordercontroller ordercontroller=Get.put(Ordercontroller());
+  final ProductsController pc = Get.put(ProductsController());
+  final Ordercontroller ordercontroller = Get.put(Ordercontroller());
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -23,7 +22,6 @@ final  ProductsController pc = Get.put(ProductsController());
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-
             Flexible(
               child: Form(
                 key: ordercontroller.globalformkey,
@@ -66,7 +64,8 @@ final  ProductsController pc = Get.put(ProductsController());
                                         .text = p.productname;
                                     ordercontroller.inputprice =
                                         p.price.toString();
-                                  },hideOnEmpty: true,
+                                  },
+                                  hideOnEmpty: true,
                                   onSaved: (val) {
                                     if (Utils.isNumeric(val)) {
                                       ordercontroller.inputprice = val;
@@ -119,7 +118,8 @@ final  ProductsController pc = Get.put(ProductsController());
                                           ordercontroller.inputprice),
                                       ordercontroller.selectedclient.id,
                                       quantity: int.tryParse(
-                                          ordercontroller.inputquantity));
+                                          ordercontroller.inputquantity),
+                                      createdTime: DateTime.now());
 
                                   await ordercontroller.saveorderitem(
                                       ordercontroller.selectedclient, order);
@@ -139,9 +139,12 @@ final  ProductsController pc = Get.put(ProductsController());
                 ),
               ),
             ),
-            SizedBox(height: 10,),
-            GetX<Ordercontroller>(builder:(c) {return Text("Total : ${ordercontroller.totalprice}");}),
-
+            SizedBox(
+              height: 10,
+            ),
+            GetX<Ordercontroller>(builder: (c) {
+              return Text("Total : ${ordercontroller.totalprice}");
+            }),
             SizedBox(
               height: 50,
             ),
@@ -153,29 +156,65 @@ final  ProductsController pc = Get.put(ProductsController());
                         itemBuilder: (context, idx) {
                           return Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: ClipRRect(borderRadius: BorderRadius.circular(8),
-                              child: Slidable(actionExtentRatio: 0.2,actions:[IconSlideAction(onTap:() {c.removeorderitem(c.listoforders[idx],
-                              c.selectedclient);},
-                                icon: Icons.delete,
-                                color: Colors.grey[600],
-                                )],
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Slidable(
+                                actionExtentRatio: 0.2,
+                                actions: [
+                                  IconSlideAction(
+                                    onTap: () {
+                                      c.removeorderitem(c.listoforders[idx],
+                                          c.selectedclient);
+                                    },
+                                    icon: Icons.delete,
+                                    color: Colors.grey[600],
+                                  )
+                                ],
                                 actionPane: SlidableDrawerActionPane(),
-                                child: Container(width:double.infinity ,color: Colors.grey[600],
+                                child: Container(
+                                  width: double.infinity,
+                                  color: Colors.grey[600],
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment: MainAxisAlignment.center,crossAxisAlignment: CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
-                                        Text(c.listoforders[idx].ordername,style: TextStyle(fontSize: 16,
-                                            fontWeight: FontWeight.w400,color: Colors.white,
-                                            letterSpacing: 1.2),),
-                                        Text("${c.listoforders[idx].price} DA",style:TextStyle(fontSize: 16,
-                                            fontWeight: FontWeight.w400,color: Colors.white,
-                                            letterSpacing: 1.2),),
-                                        Text("quantity : ${c.listoforders[idx].quantity}",style: TextStyle(fontSize: 16,
-                                            fontWeight: FontWeight.w400,color: Colors.white,
-                                            letterSpacing: 1.2),),
+                                        Text(
+                                          c.listoforders[idx].ordername,
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400,
+                                              color: Colors.white,
+                                              letterSpacing: 1.2),softWrap: true,
+                                        ),
+                                        Text(
+                                          "${c.listoforders[idx].price} DA",
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400,
+                                              color: Colors.white,
+                                              letterSpacing: 1.2),softWrap: true
+                                        ),
+                                        Text(
+                                          "quantity : ${c.listoforders[idx].quantity}",
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400,
+                                              color: Colors.white,
+                                              letterSpacing: 1.2),softWrap: true
+                                        ),
+                                        Text("created At : ${DateFormat.yMd().add_Hm().format(c.listoforders[idx].createdAt)}",
+                                            style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400,
+                                            color: Colors.white,
+                                            letterSpacing: 1.2),
+                                            softWrap: true
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -183,16 +222,19 @@ final  ProductsController pc = Get.put(ProductsController());
                               ),
                             ),
                           );
-                        },separatorBuilder: (context,idx){return SizedBox(height: 5,);},
-
+                        },
+                        separatorBuilder: (context, idx) {
+                          return SizedBox(
+                            height: 5,
+                          );
+                        },
                         itemCount: c.listoforders.length);
                   } else
                     return Container(
                       height: double.infinity,
                       child: Text('No items'),
                     );
-                })
-            )
+                }))
           ],
         ),
       ),

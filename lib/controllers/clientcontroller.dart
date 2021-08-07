@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:test_app/utils/dbhelper.dart';
-import 'client.dart';
+import '../models/client.dart';
 
 class Clientscontroller extends GetxController {
 

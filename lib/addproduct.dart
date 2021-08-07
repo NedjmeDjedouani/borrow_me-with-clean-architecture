@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:test_app/barcode_icons.dart';
-import 'package:test_app/productvalidationform.dart';
+import 'package:test_app/controllers/productvalidationform.dart';
 
 
 class Addproduct extends StatelessWidget {
@@ -10,6 +10,7 @@ class Addproduct extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       appBar: AppBar(
         title: Text('add product'),
         leading: IconButton(

@@ -5,7 +5,7 @@ import 'package:test_app/utils/dbhelper.dart';
 import 'package:test_app/models/product.dart';
 import 'package:test_app/utils/utils.dart';
 
-import 'order.dart';
+import '../models/order.dart';
 
 class Ordercontroller extends GetxController {
   var totalprice = 0.0.obs;

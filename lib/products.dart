@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:test_app/addproduct.dart';
-import 'models/productscontroller.dart';
+import 'controllers/productscontroller.dart';
 
 class Products extends StatelessWidget {
   final ProductsController controller = Get.put(ProductsController());
@@ -27,6 +27,7 @@ class Products extends StatelessWidget {
                     iconSize: 80,
                     color: Colors.indigo[700]),
                 margin: EdgeInsets.symmetric(vertical: 20),
+
               ),
               Flexible(child: GetX<ProductsController>(builder: (controller) {
                 if (controller.listofproducts.length == 0) {
@@ -45,25 +46,31 @@ class Products extends StatelessWidget {
                               padding: EdgeInsets.symmetric(vertical: 20),
                               child: Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    controller.listofproducts
-                                        .elementAt(idx)
-                                        .productname,
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                        color: Colors.white,
-                                        letterSpacing: 1.2),
+                                  Expanded(
+                                    flex:3,
+                                    child: Text(
+                                      controller.listofproducts
+                                          .elementAt(idx)
+                                          .productname,softWrap: true,textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                          color: Colors.white,
+                                          letterSpacing: 1.2),
+                                    ),
                                   ),
-                                  Text(
-                                    "price : ${controller.listofproducts[idx].price}",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w400,
-                                        letterSpacing: 1.2),
+                                  Expanded(
+                                    flex:2,
+                                    child: Text(
+                                      "price : ${controller.listofproducts[idx].price.toStringAsFixed(0)} DA",softWrap: true,
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w400,
+                                          letterSpacing: 1.2),
+                                    ),
                                   )
                                 ],
                               ),

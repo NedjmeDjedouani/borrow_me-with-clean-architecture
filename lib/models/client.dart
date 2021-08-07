@@ -4,15 +4,16 @@ class Client {
   int _id;
   double _balance;
   String _phonenumber;
-
-  Client(this._firstname,this._lastname,this._phonenumber,this._balance);
-  Client.withid(this._id,this._firstname,this._lastname,this._phonenumber,this._balance);
+DateTime _createdAt;
+  Client(this._firstname,this._lastname,this._phonenumber,this._balance,this._createdAt);
+  Client.withid(this._id,this._firstname,this._lastname,this._phonenumber,this._balance,this._createdAt);
   Client.frommap(Map<String, dynamic> map){
     this._firstname=map['firstname'];
     this._lastname=map['lastname'];
     this._id=map['id'];
     this._balance=map['balance'];
     this._phonenumber=map['phonenumber'];
+    this._createdAt=DateTime.fromMillisecondsSinceEpoch(map['created_at']);
 
   }
 
@@ -22,7 +23,8 @@ class Client {
         'balance': this.balance,
         'firstname': this.firstname,
         'lastname': this.lastname,
-        'phonenumber': this.phonenumber
+        'phonenumber': this.phonenumber,
+        'created_at':this._createdAt.millisecondsSinceEpoch,
       };
 
   String get firstname => _firstname;
@@ -34,4 +36,6 @@ class Client {
   double get balance => _balance;
 
   int get id => _id;
+
+  DateTime get createdAt => _createdAt;
 }

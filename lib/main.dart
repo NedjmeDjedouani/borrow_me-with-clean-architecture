@@ -12,6 +12,7 @@ class Myapp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Login(),
       theme:ThemeData(primaryColor: Colors.indigo[700],buttonColor: Colors.indigo[700],
           buttonTheme: ButtonThemeData(buttonColor:Colors.indigo[700] ),

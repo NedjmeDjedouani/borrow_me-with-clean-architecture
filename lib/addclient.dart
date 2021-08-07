@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:test_app/clientformvalidation.dart';
+import 'package:test_app/controllers/clientformvalidation.dart';
 import 'package:get/get.dart';
 
 class AddClient extends StatelessWidget {
@@ -51,7 +51,7 @@ class AddClient extends StatelessWidget {
                     controller: cfv.inputbalancecontroller,
                     decoration: InputDecoration(labelText: "balance"),
                     keyboardType: TextInputType.number,
-                    validator: ClientFormValidation.namevalidator,
+                    validator: ClientFormValidation.balancevalidator,
                     onSaved: (value) {
                       cfv.inputbalance = value;
                     },

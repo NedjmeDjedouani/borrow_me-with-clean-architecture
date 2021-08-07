@@ -8,8 +8,8 @@
 
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="test_app"
-        android:icon="@mipmap/ic_launcher"
+        android:label="كرديلي"
+        android:icon="@mipmap/launcher_icon"
         >
 
         <activity

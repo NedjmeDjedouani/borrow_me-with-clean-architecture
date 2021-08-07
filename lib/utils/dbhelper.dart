@@ -18,15 +18,14 @@ class DbHelper {
         db.execute(
             "Create Table clients (id integer primary key autoincrement,firstname varchar[30],lastname varchar[30],balance double,phonenumber varchar[15],created_at datetime)");
         db.execute(
-            "create Table products (id integer primary key autoincrement,price Double,barcode varchar[20],productname varchar[30],created_at datetime)");
+            "create Table products (id integer primary key autoincrement,price Double,barcode varchar[20],productname varchar[30],created_at integer)");
         db.execute(
-            "create Table orders (id integer primary key,clientid integer,name varchar[50],price double,quantity integer ,created_at datetime ,updated_at datetime,foreign key (clientid) references clients (id) on delete cascade)");
+            "create Table orders (id integer primary key,clientid integer,name varchar[50],price double,quantity integer ,created_at integer ,foreign key (clientid) references clients (id) on delete cascade)");
         db.execute(
-            "create table stock (id integer,quantity integer,updated_at datetime,foreign key (id) references products (id))");
+            "create table stock (id integer,quantity integer,updated_at integer,foreign key (id) references products (id))");
       }, onUpgrade: (db, ov, nv) {
         if (ov < 2) {
-          //  db.execute("Alter table clients add column created_at datetime not null");
-          // db.execute("Alter table products add column created_at datetime not null");
+
         }
       });
       return db;

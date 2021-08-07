@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:test_app/models/product.dart';
-import 'package:test_app/models/productscontroller.dart';
+import 'package:test_app/controllers/productscontroller.dart';
 
-import 'utils/utils.dart';
+import '../utils/utils.dart';
 
 class ProductValidationForm extends GetxController {
 
@@ -37,13 +37,26 @@ onInit()
 
   Product selectedproduct;
 
-  static String namevalidator(String name) =>
-      name.length > 40 ? 'more than 40 characters' : null;
+  static String namevalidator(String name)
+  {
+    if (name.isNotEmpty)
+      {
+        return name.length > 40 ?  'more than 40 characters' : null;
+      }
+    else return "this field is empty";
+  }
+
 
   static String barcodevalidator(String name) {
     String pattern = r'^[0-9]+$';
-
-    return name.length > 15 ? 'more than 15 characters' : null;
+    if (name.isNotEmpty)
+      {
+       return name.length > 15 ? 'more than 15 characters' : null;
+      }
+    else
+      {
+        return "this field is empty";
+      }
   }
 
   static String pricevalidator(String price) {
@@ -55,6 +68,12 @@ onInit()
       return null;
   }
 
+void clearinputcontrollers()
+{
+  pricecontroller.clear();
+  productnamecontroller.clear();
+  barcodecontroller.clear();
+}
 
 
 
@@ -63,19 +82,36 @@ onInit()
     if (globalformkey.currentState.validate()) {
       globalformkey.currentState.save();
       if (selectedproduct == null) {
-        Product p = Product(
-            inputproductname,
-            inputproductbarcode,
-            double.parse(inputproductprice));
-        pc.addproduct(p);
-        Get.snackbar('item is registered', 'Info',colorText: Colors.white,);
+
+
+         if(!pc.isProductexist(inputproductbarcode))
+           {
+             Product p = Product(
+                 inputproductname,
+                 inputproductbarcode,
+                 double.parse(inputproductprice),DateTime.now());
+             pc.addproduct(p);
+             clearinputcontrollers();
+             Get.snackbar( 'Info:','item is registered',
+                 colorText: Colors.white,
+                 snackPosition: SnackPosition.BOTTOM,
+                 backgroundColor: Colors.black);
+           }
+         else {
+           Get.snackbar( 'Info','item already exist', colorText: Colors.red,
+               snackPosition: SnackPosition.BOTTOM,
+               borderWidth: 1,
+               borderColor: Colors.red,
+               backgroundColor: Colors.white38);
+           }
+
       } else {
         pc.editproduct(Product.withid(
             selectedproduct.id,
             inputproductname,
             inputproductbarcode,
             double.tryParse(
-                inputproductprice)));
+                inputproductprice),DateTime.now()));
         Get.back();
       }
 

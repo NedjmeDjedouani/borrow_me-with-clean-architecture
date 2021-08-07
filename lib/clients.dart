@@ -2,8 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:test_app/addorder.dart';
-import 'package:test_app/models/clientcontroller.dart';
+import 'package:test_app/controllers/clientcontroller.dart';
 import 'addclient.dart';
 
 class Clients extends StatefulWidget {
@@ -63,34 +64,52 @@ class _ClientsState extends State<Clients> {
                                               mainAxisAlignment:
                                                   MainAxisAlignment.spaceAround,
                                               children: [
-                                                Text(
-                                                  c.listofclients[idx].firstname,
-                                                  style: TextStyle(
-                                                      height: 1.5,
-                                                      color: Colors.white,
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.w500),
+                                                Expanded(
+                                                  child: Text(
+                                                    c.listofclients[idx].firstname,
+                                                    style: TextStyle(
+                                                        height: 1.5,
+                                                        color: Colors.white,
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                  textAlign: TextAlign.center,),
                                                 ),
-                                                Text(
-                                                  c.listofclients[idx].lastname,
-                                                  style: TextStyle(
-                                                      height: 1.5,
-                                                      color: Colors.white,
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.w500),
+
+                                                Expanded(
+                                                  child: Text(
+                                                    c.listofclients[idx].lastname,
+                                                    style: TextStyle(
+                                                        height: 1.5,
+                                                        color: Colors.white,
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                    textAlign: TextAlign.center,
+                                                  ),
                                                 ),
-                                                Text(
-                                                  c.listofclients[idx].balance.toString(),
-                                                  style: TextStyle(
-                                                      height: 1.5,
-                                                      color: Colors.white,
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                      FontWeight.w500),
+                                                Expanded(
+                                                  child: Text(
+                                                    c.listofclients[idx].balance.toStringAsFixed(0),
+                                                    style: TextStyle(
+                                                        height: 1.5,
+                                                        color: Colors.white,
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                        FontWeight.w500),
+                                                    textAlign: TextAlign.center,
+                                                  ),
                                                 ),
                                               ],
+                                            ),
+                                            SizedBox(height: 5,),
+                                            Text("created at : ${DateFormat.yMd().add_Hm().format(c.listofclients[idx].createdAt)}",
+                                              textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontStyle: FontStyle.italic,
+                                                    color: Colors.white,
+                                                    letterSpacing: 1.2),softWrap: true
                                             ),
                                           ]),
                                     ),

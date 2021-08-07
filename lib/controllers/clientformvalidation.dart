@@ -2,7 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:test_app/models/client.dart';
-import 'models/clientcontroller.dart';
+import 'package:test_app/utils/utils.dart';
+import 'clientcontroller.dart';
 
 class ClientFormValidation extends GetxController {
   Clientscontroller c = Get.find();
@@ -38,11 +39,26 @@ class ClientFormValidation extends GetxController {
     super.onInit();
   }
 
-  static String namevalidator(String name) =>
-      name.length > 40 ? 'more than 40 characters' : null;
+  static String namevalidator(String name)
+  { if (name.isNotEmpty)
+    {
+     return name.length > 40 ? 'more than 40 characters' : null;
+    }
+    else
+      {
+       return "this field is empty";
+      }
+  }
 
-  static String barcodevalidator(String name) =>
-      name.length > 15 ? 'more than 15 characters' : null;
+static String balancevalidator(String name)
+{
+  if (!Utils.isNumeric(name)) {
+    return 'this field should be a number';
+  } else if (name.length > 15) {
+    return 'this number should not exceed 15 digits';
+  } else
+    return null;
+}
 
   static String phonevalidator(String phonenumber) {
     final String pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
@@ -63,7 +79,7 @@ class ClientFormValidation extends GetxController {
       globalkeyform.currentState.save();
       if (selectedclient == null) {
         Client client = Client(inputfirstname, inputlastname,
-            inputphonenumber, double.tryParse(inputbalance));
+            inputphonenumber, double.tryParse(inputbalance),DateTime.now());
         c.addclient(client);
       } else {
         c.editclient(Client.withid(
@@ -71,7 +87,7 @@ class ClientFormValidation extends GetxController {
             inputfirstname,
             inputlastname,
             inputphonenumber,
-            double.tryParse(inputbalance)));
+            double.tryParse(inputbalance),DateTime.now()));
       }
 Get.back();
     }
