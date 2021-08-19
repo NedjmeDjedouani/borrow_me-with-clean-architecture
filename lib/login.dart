@@ -10,9 +10,11 @@ class Login extends StatefulWidget {
 GlobalKey<FormState> globalformkey = GlobalKey<FormState>();
 
 class _LoginState extends State<Login> {
+
   bool isvisible = false;
   @override
   Widget build(BuildContext context) {
+    var size=MediaQuery.of(context).size;
     return Scaffold(
         body: Container(
             padding: EdgeInsets.all(10),
@@ -20,8 +22,18 @@ class _LoginState extends State<Login> {
               child: Form(
                 key: globalformkey,
                 child: Column(
+
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    Container(
+                      margin: EdgeInsets.symmetric(vertical: 10),
+                      width:size.width ,
+                      height: 120,
+                      child: CustomPaint(
+                      //  child: Align(child: Text('hello',style: TextStyle(fontSize: 30,color: Colors.white,fontFamily: 'PatrickHand')),alignment: Alignment.bottomCenter,),
+                        painter:mycustompaint() ,
+                      ),
+                    ),
                     TextFormField(
                       textInputAction: TextInputAction.next,
                       validator: (val) {
@@ -68,22 +80,48 @@ class _LoginState extends State<Login> {
                       margin:
                           EdgeInsets.symmetric(horizontal: 80, vertical: 50),
                       child: ElevatedButton(
+
                           onPressed: () {
                             if (globalformkey.currentState.validate()) {
                               Get.off(() => Homepage());
                             }
                           },
                           style: ElevatedButton.styleFrom(
-                              primary: Colors.indigo[600],
+                              primary: Colors.indigo[700],
                               padding: EdgeInsets.all(10)),
                           child: Text(
                             'Sign in',
                             style: TextStyle(fontSize: 20, letterSpacing: 1),
-                          )),
+                          ),
+                      ),
                     )
                   ],
                 ),
               ),
             )));
   }
+}
+
+class mycustompaint extends CustomPainter
+{
+  @override
+  void paint(Canvas canvas, Size size) {
+    Path path=Path();
+Paint paint =Paint()..color=Colors.indigo[700];
+    path.lineTo(0.25*size.width, 0);
+    path.lineTo(0.5*size.width, 0.5*size.height);
+    path.lineTo(0.75*size.width, 0);
+    path.lineTo(size.width, 0);
+    path.lineTo(size.width, size.height);
+    path.lineTo(0,size.height );
+    canvas.drawPath(path, paint);
+    // TODO: implement paint
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return false;
+  }
+
+
 }

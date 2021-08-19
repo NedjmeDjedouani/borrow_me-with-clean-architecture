@@ -20,8 +20,9 @@ class Ordercontroller extends GetxController {
     selectedclient = Get.arguments;
     if (selectedclient != null) {
       getlistoforders(selectedclient).then((value) {
-     listoforders.assignAll(value);
-     totalprice.value=calculatetotalprice();});
+        listoforders.assignAll(value);
+        totalprice.value = calculatetotalprice();
+      });
     }
     super.onInit();
   }
@@ -37,8 +38,8 @@ class Ordercontroller extends GetxController {
     totalprice = totalprice - order.price * order.quantity;
   }
 
-  String quantityvalidator(String value) => Utils.isNumeric(value) ? null : "give a valid number";
-
+  String quantityvalidator(String value) =>
+      Utils.isNumeric(value) ? null : "give a valid number";
 
   onChangeordername(String value) {
     if (value != null) {
@@ -50,9 +51,8 @@ class Ordercontroller extends GetxController {
     }
   }
 
-
   Future<List<Order>> getlistoforders(Client client) async {
-    List<Order> orderslist=[];
+    List<Order> orderslist = [];
     await dbhelper.searchorderslist(client).then((value) {
       if (value.isNotEmpty) {
         for (int i = 0; i < value.length; i++) {
@@ -71,7 +71,7 @@ class Ordercontroller extends GetxController {
   }
 
   removeorderitem(Order order, Client client) {
-    dbhelper.deleteorder(order, client).then((value)  {
+    dbhelper.deleteorder(order, client).then((value) {
       listoforders.remove(order);
       subtractfromtotalprice(order);
     });
@@ -79,7 +79,9 @@ class Ordercontroller extends GetxController {
 
   double calculatetotalprice() {
     var totalprice = 0.0;
-    listoforders.forEach((element) {totalprice=totalprice+element.price*element.quantity;});
+    listoforders.forEach((element) {
+      totalprice = totalprice + element.price * element.quantity;
+    });
     return totalprice;
   }
 }

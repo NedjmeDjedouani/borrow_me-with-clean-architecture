@@ -11,25 +11,23 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-
-
   @override
   Widget build(BuildContext context) {
-    ProductsController c=Get.put(ProductsController());
+    ProductsController c = Get.put(ProductsController());
 
     return Scaffold(
-      floatingActionButton: FloatingActionButton(child: Icon(Barcode.barcode_scan),
-        onPressed: () {
-        String barcode;
-       c.getbarcodewithcam().then((value){barcode=value;
-       c.searchedproduct=c.searchProductWithbarcode(barcode);
-       if (c.searchedproduct!=null) c.showsearchedproduct.value=true;
-       else c.showsearchedproduct.value=false;
-
-       });
-
-
-      },backgroundColor: Colors.indigo[700],),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Barcode.barcode_scan),
+        onPressed: () async {
+          String barcode = await c.getbarcodewithcam();
+          c.searchedproduct = c.searchProductWithbarcode(barcode);
+          if (c.searchedproduct != null)
+            c.showsearchedproduct.value = true;
+          else
+            c.showsearchedproduct.value = false;
+        },
+        backgroundColor: Colors.indigo[700],
+      ),
       appBar: AppBar(),
       body: SafeArea(
           child: Container(
@@ -43,8 +41,7 @@ class _HomepageState extends State<Homepage> {
                 padding: EdgeInsets.symmetric(vertical: 10),
                 child: InkWell(
                   onTap: () {
-                    Get.to(()=>Clients());
-
+                    Get.to(() => Clients());
                   },
                   child: Card(
                       elevation: 5,
@@ -82,7 +79,7 @@ class _HomepageState extends State<Homepage> {
                 padding: EdgeInsets.symmetric(vertical: 10),
                 child: InkWell(
                   onTap: () {
-                    Get.to(()=>Products());
+                    Get.to(() => Products());
                   },
                   child: Card(
                       elevation: 5,
@@ -113,35 +110,42 @@ class _HomepageState extends State<Homepage> {
                       )),
                 ),
               ),
-              SizedBox(height: 10,),
-
-              Container(margin: EdgeInsets.symmetric(horizontal: 30),
-                child: GetX<ProductsController> (builder: (ch) {
-                  if(c.showsearchedproduct.value){
-                    print('yo');
-                  return Card(margin: EdgeInsets.symmetric(),child: Container(width: double.infinity,
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    child: Column(mainAxisSize: MainAxisSize.min,children: [
-                      Text("name: ${c.searchedproduct.productname}",style: TextStyle(fontSize: 16),),
-                      SizedBox(height: 10,),
-                      Text("Price : ${c.searchedproduct.price} DA",style: TextStyle(fontSize: 16)),
-                    ],
-                    ),
-                  ),
-                  );
-                } else return SizedBox();  }),
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 30),
+                child: GetX<ProductsController>(builder: (ch) {
+                  if (c.showsearchedproduct.value) {
+                    return Card(
+                      margin: EdgeInsets.symmetric(),
+                      child: Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.symmetric(vertical: 10),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              "name: ${c.searchedproduct.productname}",
+                              style: TextStyle(fontSize: 16),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text("Price : ${c.searchedproduct.price} DA",
+                                style: TextStyle(fontSize: 16)),
+                          ],
+                        ),
+                      ),
+                    );
+                  } else
+                    return SizedBox();
+                }),
               )
-
-
             ],
           ),
-
-
-
         ),
-      )
-      ),
-
+      )),
     );
   }
 }

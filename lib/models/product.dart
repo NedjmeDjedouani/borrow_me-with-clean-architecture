@@ -6,14 +6,15 @@ class Product {
   int _id;
   double _price;
   DateTime _createdAt;
-  Product(this._productname, this._barcode, this._price,this._createdAt);
-  Product.withid(this._id, this._productname, this._barcode, this._price,this._createdAt);
+  Product(this._productname, this._barcode, this._price, this._createdAt);
+  Product.withid(
+      this._id, this._productname, this._barcode, this._price, this._createdAt);
   Map<String, dynamic> tomap() => {
         "id": this._id,
         "productname": this._productname,
         "barcode": this._barcode,
         "price": this._price,
-    "created_at":this._createdAt.millisecondsSinceEpoch,
+        "created_at": this._createdAt.millisecondsSinceEpoch,
       };
 
   Product.frommap(Map<String, dynamic> map) {
@@ -21,7 +22,7 @@ class Product {
     this._barcode = map['barcode'];
     this._productname = map['productname'];
     this._price = map['price'];
-    this._createdAt=DateTime.fromMillisecondsSinceEpoch(map['created_at']);
+    this._createdAt = DateTime.fromMillisecondsSinceEpoch(map['created_at']);
   }
 
   String get barcode => _barcode;

@@ -2,15 +2,42 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:test_app/barcode_icons.dart';
 import 'package:test_app/controllers/productvalidationform.dart';
+import 'package:test_app/utils/dbhelper.dart';
 
 
-class Addproduct extends StatelessWidget {
-  final ProductValidationForm c=Get.put(ProductValidationForm());
 
+class Addproduct extends StatefulWidget {
+  @override
+  _AddproductState createState() => _AddproductState();
+}
+
+class _AddproductState extends State<Addproduct> with TickerProviderStateMixin {
+  final ProductValidationForm c = Get.put(ProductValidationForm());
+  Animation<double> opacity,opacity2,opacity3;
+  AnimationController animationController;
+
+@override
+void initState() {
+    // TODO: implement initState
+animationController=AnimationController(vsync: this,duration: Duration(seconds: 1));
+ opacity=Tween<double>(begin: 0.0,end: 1.0)
+      .animate(CurvedAnimation(parent: animationController, curve:Interval(0, 0.33,curve: Curves.easeIn) ));
+opacity2=Tween<double>(begin: 0.0,end: 1.0)
+      .animate(CurvedAnimation(parent: animationController, curve:Interval(0.33,0.66,curve: Curves.bounceIn)));
+opacity3=Tween<double>(begin: 0.0,end: 1.0)
+      .animate(CurvedAnimation(parent: animationController, curve:Interval(0.66,1,curve: Curves.bounceOut) ));
+  animationController.forward();
+    super.initState();
+  }
+  void dispose() {
+    // TODO: implement dispose
+  animationController.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
 
+    return Scaffold(
       appBar: AppBar(
         title: Text('add product'),
         leading: IconButton(
@@ -29,44 +56,48 @@ class Addproduct extends StatelessWidget {
               key: c.globalformkey,
               child: Column(
                 children: [
-                  TextFormField(
-                    decoration: InputDecoration(labelText: "Name"),
-                    validator: ProductValidationForm.namevalidator,
-                    onSaved: (value) {
-                      c.inputproductname = value;
-                    },
-                    controller: c.productnamecontroller,
+                  FadeTransition(opacity:opacity ,
+                    child: TextFormField(
+                      decoration: InputDecoration(labelText: "Name"),
+                      validator: ProductValidationForm.namevalidator,
+                      onSaved: (value) {
+                        c.inputproductname = value;
+                      },
+                      controller: c.productnamecontroller,
+                    ),
                   ),
-                  TextFormField(
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(labelText: "Price"),
-                    validator: ProductValidationForm.pricevalidator,
-                    onSaved: (value) {
-                      c.inputproductprice = value;
-                    },
-                    controller: c.pricecontroller,
+                  FadeTransition(
+                    opacity: opacity2,
+                    child: TextFormField(
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(labelText: "Price"),
+                      validator: ProductValidationForm.pricevalidator,
+                      onSaved: (value) {
+                        c.inputproductprice = value;
+                      },
+                      controller: c.pricecontroller,
+                    ),
                   ),
-                  TextFormField(
-                    keyboardType: TextInputType.number,
-                    controller: c.barcodecontroller,
-                    decoration: InputDecoration(
-                        labelText: "barcode",
-                        suffixIcon: IconButton(
-                            onPressed: () async {
-                              await c.pc
-                                  .getbarcodewithcam()
-                                  .then((value) {
-                                c.barcodecontroller.text =value;
-                              });
-                            },
-                            icon: Icon(
-                              Barcode.barcode_scan,
-                              color: Colors.grey[600],
-                            ))),
-                    validator: ProductValidationForm.barcodevalidator,
-                    onSaved: (value) {
-                      c.inputproductbarcode = value;
-                    },
+                  FadeTransition(
+                    opacity: opacity3,
+                    child: TextFormField(
+                      keyboardType: TextInputType.number,
+                      controller: c.barcodecontroller,
+                      decoration: InputDecoration(
+                          labelText: "barcode",
+                          suffixIcon: IconButton(
+                              onPressed: () async {
+                                c.barcodecontroller.text =await c.pc.getbarcodewithcam();
+                              },
+                              icon: Icon(
+                                Barcode.barcode_scan,
+                                color: Colors.grey[600],
+                              ))),
+                      validator: ProductValidationForm.barcodevalidator,
+                      onSaved: (value) {
+                        c.inputproductbarcode = value;
+                      },
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 10.0),

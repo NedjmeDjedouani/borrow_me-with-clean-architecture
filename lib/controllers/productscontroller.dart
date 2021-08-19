@@ -6,13 +6,13 @@ import 'package:test_app/models/product.dart';
 class ProductsController extends GetxController {
   List<Product> suggestions = [];
   RxList<Product> listofproducts = <Product>[].obs;
-  Rx<bool> showsearchedproduct=false.obs;
+  Rx<bool> showsearchedproduct = false.obs;
   Product searchedproduct;
   DbHelper dbHelper = DbHelper();
   @override
   onInit() {
-   getallproducts();
-   super.onInit();
+    getallproducts();
+    super.onInit();
   }
 
   getallproducts() {
@@ -31,8 +31,8 @@ class ProductsController extends GetxController {
       if (value > 0) {
         //  int idx=listofproducts.indexWhere((element) => element.id==product.id);
         //  listofproducts.removeAt(idx);
-          listofproducts.remove(product);
-        }
+        listofproducts.remove(product);
+      }
     });
   }
 
@@ -54,20 +54,21 @@ class ProductsController extends GetxController {
     return null;
   }
 
-  editproduct(Product product)
-  {
-   int idx=listofproducts.indexWhere((element) => element.id==product.id);
-   listofproducts[idx]=product;
+  editproduct(Product product) {
+    int idx = listofproducts.indexWhere((element) => element.id == product.id);
+    listofproducts[idx] = product;
     dbHelper.updateproduct(product);
   }
 
-  bool isProductexist(String barcode)
-  {
-    return searchProductWithbarcode(barcode)==null ? false:true;
+  bool isProductexist(String barcode) {
+    return searchProductWithbarcode(barcode) == null ? false : true;
   }
-  Product searchProductWithbarcode(String barcode)
-  {
-     Product searchedproduct= listofproducts.firstWhere((element) => barcode==element.barcode,orElse: (){return null;});
-     return  searchedproduct;
+
+  Product searchProductWithbarcode(String barcode) {
+    Product searchedproduct = listofproducts
+        .firstWhere((element) => barcode == element.barcode, orElse: () {
+      return null;
+    });
+    return searchedproduct;
   }
 }

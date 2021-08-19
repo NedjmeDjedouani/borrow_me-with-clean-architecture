@@ -3,12 +3,10 @@ import 'package:test_app/utils/dbhelper.dart';
 import '../models/client.dart';
 
 class Clientscontroller extends GetxController {
-
   DbHelper dbHelper = DbHelper();
   var listofclients = <Client>[].obs;
 
   onInit() {
-
     getallclients();
     super.onInit();
   }

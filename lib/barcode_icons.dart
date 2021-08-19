@@ -11,7 +11,7 @@
 ///      fonts:
 ///       - asset: fonts/Barcode.ttf
 ///
-/// 
+///
 ///
 import 'package:flutter/widgets.dart';
 
@@ -20,6 +20,6 @@ class Barcode {
 
   static const _kFontFam = 'Barcode';
   static const String _kFontPkg = null;
-
-  static const IconData barcode_scan = IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData barcode_scan =
+      IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }

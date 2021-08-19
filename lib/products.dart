@@ -25,9 +25,8 @@ class Products extends StatelessWidget {
                     },
                     icon: Icon(Icons.add_circle_rounded),
                     iconSize: 80,
-                    color: Colors.indigo[700]),
+                      color: Colors.indigo[700]),
                 margin: EdgeInsets.symmetric(vertical: 20),
-
               ),
               Flexible(child: GetX<ProductsController>(builder: (controller) {
                 if (controller.listofproducts.length == 0) {
@@ -49,24 +48,31 @@ class Products extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Expanded(
-                                    flex:3,
+                                    flex: 3,
                                     child: Text(
                                       controller.listofproducts
                                           .elementAt(idx)
-                                          .productname,softWrap: true,textAlign: TextAlign.center,
+                                          .productname,
+                                      softWrap: true,
+                                      textAlign: TextAlign.center,
                                       style: TextStyle(
-                                          fontSize: 16,
+                                        fontFamily: 'PatrickHand',
+                                          fontSize: 18,
                                           fontWeight: FontWeight.w400,
                                           color: Colors.white,
                                           letterSpacing: 1.2),
                                     ),
                                   ),
                                   Expanded(
-                                    flex:2,
+                                    flex: 2,
                                     child: Text(
-                                      "price : ${controller.listofproducts[idx].price.toStringAsFixed(0)} DA",softWrap: true,
+
+                                      "price : ${controller.listofproducts[idx].price.toStringAsFixed(0)} DA",
+                                      softWrap: true,
                                       style: TextStyle(
-                                          fontSize: 16,
+                                          fontFamily: 'PatrickHand',
+
+                                          fontSize: 18,
                                           color: Colors.white,
                                           fontWeight: FontWeight.w400,
                                           letterSpacing: 1.2),
@@ -80,7 +86,9 @@ class Products extends StatelessWidget {
                                 color: Colors.grey[600].withOpacity(0.7),
                                 icon: Icons.edit,
                                 onTap: () {
-                                  Get.to(() => Addproduct(),arguments: controller.listofproducts[idx]);
+                                  Get.to(() => Addproduct(),
+                                      arguments:
+                                          controller.listofproducts[idx]);
                                 },
                               )
                             ],

@@ -10,6 +10,7 @@ import 'package:test_app/utils/utils.dart';
 import 'models/order.dart';
 import 'controllers/productscontroller.dart';
 import 'package:intl/intl.dart';
+
 class Addorder extends StatelessWidget {
   final ProductsController pc = Get.put(ProductsController());
   final Ordercontroller ordercontroller = Get.put(Ordercontroller());
@@ -186,35 +187,41 @@ class Addorder extends StatelessWidget {
                                         Text(
                                           c.listoforders[idx].ordername,
                                           style: TextStyle(
-                                              fontSize: 16,
+                                              fontFamily: 'PatrickHand',
+
+                                              fontSize: 18,
                                               fontWeight: FontWeight.w400,
                                               color: Colors.white,
-                                              letterSpacing: 1.2),softWrap: true,
+                                              letterSpacing: 1.2),
+                                          softWrap: true,
                                         ),
-                                        Text(
-                                          "${c.listoforders[idx].price} DA",
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w400,
-                                              color: Colors.white,
-                                              letterSpacing: 1.2),softWrap: true
-                                        ),
-                                        Text(
-                                          "quantity : ${c.listoforders[idx].quantity}",
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w400,
-                                              color: Colors.white,
-                                              letterSpacing: 1.2),softWrap: true
-                                        ),
-                                        Text("created At : ${DateFormat.yMd().add_Hm().format(c.listoforders[idx].createdAt)}",
+                                        Text("${c.listoforders[idx].price} DA",
                                             style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w400,
-                                            color: Colors.white,
-                                            letterSpacing: 1.2),
-                                            softWrap: true
-                                        ),
+                                                fontFamily: 'PatrickHand',
+
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w400,
+                                                color: Colors.white,
+                                                letterSpacing: 1.2),
+                                            softWrap: true),
+                                        Text(
+                                            "quantity : ${c.listoforders[idx].quantity}",
+                                            style: TextStyle(
+                                                fontFamily: 'PatrickHand',
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w400,
+                                                color: Colors.white,
+                                                letterSpacing: 1.2),
+                                            softWrap: true),
+                                        Text(
+                                            "created At : ${DateFormat.yMd().add_Hm().format(c.listoforders[idx].createdAt)}",
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontFamily: 'PatrickHand',
+                                                fontWeight: FontWeight.w400,
+                                                color: Colors.white,
+                                                letterSpacing: 1.2),
+                                            softWrap: true),
                                       ],
                                     ),
                                   ),
