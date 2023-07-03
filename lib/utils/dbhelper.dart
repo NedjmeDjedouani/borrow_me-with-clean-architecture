@@ -1,17 +1,17 @@
-import 'package:path/path.dart';
+/* import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:test_app/models/client.dart';
-import 'package:test_app/models/order.dart';
+import 'package:test_app/features/order/data/models/order.dart';
 import 'package:test_app/models/product.dart';
 import 'dart:async';
 
 class DbHelper {
-  static final DbHelper dbhelper = DbHelper.Internal();
+  static final DbHelper dbhelper = DbHelper.internal();
   factory DbHelper() => dbhelper;
-  DbHelper.Internal();
-  static Database db;
+  DbHelper.internal();
+  static Database? db;
 
-  Future<Database> createdatabase() async {
+  Future<Database?> createdatabase() async {
     if (db == null) {
       String path = join(await getDatabasesPath(), "gestion.db");
       db = await openDatabase(path, version: 1, onCreate: (db, int v) {
@@ -36,24 +36,24 @@ class DbHelper {
 
   Future<int> createclient(Client client) async {
     db = await createdatabase();
-    Future<int> nrow = db.insert('clients', client.tomap());
+    Future<int> nrow = db!.insert('clients', client.tomap());
     return nrow;
   }
 
   Future<int> createproduct(Product product) async {
     db = await createdatabase();
-    Future<int> nrow = db.insert('products', product.tomap());
+    Future<int> nrow = db!.insert('products', product.tomap());
     return nrow;
   }
 
   Future<List<Map<String, dynamic>>> getallclients() async {
     db = await createdatabase();
-    return db.query('clients');
+    return db!.query('clients');
   }
 
   Future<List<Map<String, dynamic>>> getallproducts() async {
     db = await createdatabase();
-    return db.query('products');
+    return db!.query('products');
   }
 
   Future<List<Product>> getallproductslist() async {
@@ -84,60 +84,61 @@ class DbHelper {
 
   Future<int> removeclient(Client client) async {
     db = await createdatabase();
-    var nrows = db.delete("clients", where: "id = ?", whereArgs: [client.id]);
+    var nrows = db!.delete("clients", where: "id = ?", whereArgs: [client.id]);
     return nrows;
   }
 
   Future<int> removeproduct(Product product) async {
     db = await createdatabase();
-    var nrows = db.delete("products", where: "id = ?", whereArgs: [product.id]);
+    var nrows = db!.delete("products", where: "id = ?", whereArgs: [product.id]);
     return nrows;
   }
 
   Future<List<Map<String, dynamic>>> searchproduct(String val) async {
     db = await createdatabase();
-    return db
+    return db!
         .query('products', where: "productname like ?", whereArgs: ['%$val%']);
   }
 
   Future<List<Map<String, dynamic>>> searchorderslist(Client client) async {
     db = await (createdatabase());
     var maps =
-        await db.query("orders", where: "clientid = ?", whereArgs: [client.id]);
+        await db!.query("orders", where: "clientid = ?", whereArgs: [client.id]);
     return maps;
   }
 
   Future<int> updateproduct(Product product) async {
     db = await createdatabase();
-    var nrows = db.update('products', product.tomap(),
+    var nrows = db!.update('products', product.tomap(),
         where: "id = ?", whereArgs: [product.id]);
     return nrows;
   }
 
   Future<int> updateclient(Client client) async {
     db = await createdatabase();
-    var nrows = db.update('clients', client.tomap(),
+    var nrows = db!.update('clients', client.tomap(),
         where: "id = ?", whereArgs: [client.id]);
     return nrows;
   }
 
-  Future<int> createorderitem(Client client, Order order) async {
+  Future<int> createorderitem( Order order) async {
     db = await createdatabase();
-    var nrows = db.insert('orders', order.tomap());
+    var nrows = db!.insert('orders', order.tomap());
     return nrows;
   }
 
   Future<int> deleteorderslist(Client client) async {
     db = await createdatabase();
     var nrows =
-        db.delete("orders", where: "clientid = ?", whereArgs: [client.id]);
+        db!.delete("orders", where: "clientid = ?", whereArgs: [client.id]);
     return nrows;
   }
 
   Future<int> deleteorder(Order order, Client client) async {
     db = await createdatabase();
-    var nrows = db.delete("orders",
+    var nrows = db!.delete("orders",
         where: "clientid = ? and id = ?", whereArgs: [client.id, order.id]);
     return nrows;
   }
 }
+ */

@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:test_app/models/client.dart';
+import 'package:test_app/features/order/domain/entities/cliententity.dart';
 import 'package:test_app/utils/utils.dart';
 import 'clientcontroller.dart';
 
 class ClientFormValidation extends GetxController {
   Clientscontroller c = Get.find();
   GlobalKey<FormState> globalkeyform = GlobalKey<FormState>();
-  String inputfirstname, inputlastname, inputbalance, inputphonenumber;
-  TextEditingController inputfirstnamecontroller,
+  late String inputfirstname, inputlastname, inputbalance, inputphonenumber;
+  late TextEditingController inputfirstnamecontroller,
       inputlastnamecontroller,
       inputbalancecontroller,
       inputphonenumbercontroller;
-  Client selectedclient;
+  ClientEntity? selectedclient;
 
   initializeinputcontrollers() {
     selectedclient = Get.arguments;
@@ -21,10 +21,10 @@ class ClientFormValidation extends GetxController {
     inputphonenumbercontroller = TextEditingController();
     inputlastnamecontroller = TextEditingController();
     if (selectedclient != null) {
-      inputfirstnamecontroller.text = selectedclient.firstname;
-      inputlastnamecontroller.text = selectedclient.lastname;
-      inputphonenumbercontroller.text = selectedclient.phonenumber;
-      inputbalancecontroller.text = selectedclient.balance.toString();
+      inputfirstnamecontroller.text = selectedclient!.firstname!;
+      inputlastnamecontroller.text = selectedclient!.lastname!;
+      inputphonenumbercontroller.text = selectedclient!.phonenumber!;
+      inputbalancecontroller.text = selectedclient!.balance.toString();
     }
   }
 
@@ -34,7 +34,8 @@ class ClientFormValidation extends GetxController {
     super.onInit();
   }
 
-  static String namevalidator(String name) {
+  static String? namevalidator(String? name) {
+    if (name == null) return "name is not valid";
     if (name.isNotEmpty) {
       return name.length > 40 ? 'more than 40 characters' : null;
     } else {
@@ -42,7 +43,8 @@ class ClientFormValidation extends GetxController {
     }
   }
 
-  static String balancevalidator(String name) {
+  static String? balancevalidator(String? name) {
+    if (name == null) return "number is not valid";
     if (!Utils.isNumeric(name)) {
       return 'this field should be a number';
     } else if (name.length > 15) {
@@ -51,10 +53,10 @@ class ClientFormValidation extends GetxController {
       return null;
   }
 
-  static String phonevalidator(String phonenumber) {
+  static String? phonevalidator(String? phonenumber) {
     final String pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
     final RegExp regExp = RegExp(pattern);
-
+    if (phonenumber == null) return "phonenumber is not valid";
     if (phonenumber.isEmpty) {
       return null;
     } else {
@@ -63,20 +65,20 @@ class ClientFormValidation extends GetxController {
   }
 
   void isclientformvalid() {
-    if (globalkeyform.currentState.validate()) {
-      globalkeyform.currentState.save();
+    if (globalkeyform.currentState!.validate()) {
+      globalkeyform.currentState!.save();
       if (selectedclient == null) {
-        Client client = Client(inputfirstname, inputlastname, inputphonenumber,
-            double.tryParse(inputbalance), DateTime.now());
+        ClientEntity client = ClientEntity(firstname: inputfirstname, lastname: inputlastname,phonenumber:  inputphonenumber,
+           balance:  double.tryParse(inputbalance));
         c.addclient(client);
       } else {
-        c.editclient(Client.withid(
-            selectedclient.id,
-            inputfirstname,
-            inputlastname,
-            inputphonenumber,
-            double.tryParse(inputbalance),
-            DateTime.now()));
+        c.editclient(ClientEntity(
+          id:   selectedclient!.id,
+          firstname:   inputfirstname,
+         lastname:    inputlastname,
+          phonenumber:   inputphonenumber,
+           balance:  double.tryParse(inputbalance)!,
+        ));
       }
       Get.back();
     }

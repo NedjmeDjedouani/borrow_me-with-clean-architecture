@@ -2,7 +2,7 @@
 
 class Utils{
 
-static bool isNumeric(String s) {
+static bool isNumeric(String? s) {
     if (s == null) {
       return false;
     }

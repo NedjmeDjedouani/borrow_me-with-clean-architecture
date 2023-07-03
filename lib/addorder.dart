@@ -1,19 +1,17 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:test_app/controllers/orderscontroller.dart';
-import 'package:test_app/models/product.dart';
+import 'package:test_app/features/order/domain/entities/orderentity.dart';
+import 'package:test_app/features/order/domain/entities/productentity.dart';
 import 'package:test_app/utils/utils.dart';
-import 'models/order.dart';
 import 'controllers/productscontroller.dart';
 import 'package:intl/intl.dart';
 
 class Addorder extends StatelessWidget {
-  final ProductsController pc = Get.put(ProductsController());
-  final Ordercontroller ordercontroller = Get.put(Ordercontroller());
+  final ProductsController productsController = Get.put(ProductsController());
+  final Ordercontroller orderController = Get.put(Ordercontroller());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +23,7 @@ class Addorder extends StatelessWidget {
           children: [
             Flexible(
               child: Form(
-                key: ordercontroller.globalformkey,
+                key: orderController.globalformkey,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -37,7 +35,7 @@ class Addorder extends StatelessWidget {
                           children: [
                             Expanded(
                                 flex: 3,
-                                child: TypeAheadFormField<Product>(
+                                child: TypeAheadFormField<ProductEntity>(
                                   debounceDuration: Duration(milliseconds: 500),
                                   textFieldConfiguration:
                                       TextFieldConfiguration(
@@ -50,30 +48,31 @@ class Addorder extends StatelessWidget {
                                         ),
                                         contentPadding: EdgeInsets.symmetric(
                                             horizontal: 5)),
-                                    controller: ordercontroller
+                                    controller: orderController
                                         .orderinputtextcontroller,
                                   ),
                                   validator: Ordercontroller.ordervalidator,
-                                  suggestionsCallback: pc.getproducts,
+                                  suggestionsCallback:
+                                      productsController.searchProduct,
                                   itemBuilder: (c, p) {
                                     return ListTile(
-                                        title: Text(p.productname),
+                                        title: Text(p.productname!),
                                         trailing: Text(p.price.toString()));
                                   },
                                   onSuggestionSelected: (p) {
-                                    ordercontroller.orderinputtextcontroller
-                                        .text = p.productname;
-                                    ordercontroller.inputprice =
+                                    orderController.orderinputtextcontroller
+                                        .text = p.productname!;
+                                    orderController.inputprice =
                                         p.price.toString();
                                   },
                                   hideOnEmpty: true,
                                   onSaved: (val) {
                                     if (Utils.isNumeric(val)) {
-                                      ordercontroller.inputprice = val;
-                                      ordercontroller.inputordername =
+                                      orderController.inputprice = val;
+                                      orderController.inputordername =
                                           "Unknown";
                                     } else {
-                                      ordercontroller.inputordername = val;
+                                      orderController.inputordername = val;
                                     }
                                   },
                                 )),
@@ -85,7 +84,7 @@ class Addorder extends StatelessWidget {
                               child: TextFormField(
                                 keyboardType: TextInputType.number,
                                 style: TextStyle(fontSize: 18),
-                                validator: ordercontroller.quantityvalidator,
+                                validator: orderController.quantityvalidator,
                                 decoration: InputDecoration(
                                     labelText: "quantity",
                                     border: OutlineInputBorder(
@@ -94,7 +93,7 @@ class Addorder extends StatelessWidget {
                                     contentPadding:
                                         EdgeInsets.symmetric(horizontal: 5)),
                                 onChanged: (value) {
-                                  ordercontroller.inputquantity = value;
+                                  orderController.inputquantity = value;
                                 },
                               ),
                             ),
@@ -109,21 +108,21 @@ class Addorder extends StatelessWidget {
                         children: [
                           ElevatedButton(
                               onPressed: () async {
-                                if (ordercontroller.globalformkey.currentState
+                                if (orderController.globalformkey.currentState!
                                     .validate()) {
-                                  ordercontroller.globalformkey.currentState
+                                  orderController.globalformkey.currentState!
                                       .save();
-                                  Order order = Order(
-                                      ordercontroller.inputordername,
-                                      double.tryParse(
-                                          ordercontroller.inputprice),
-                                      ordercontroller.selectedclient.id,
+                                  OrderEntity order = OrderEntity(
+                                      name: orderController.inputordername,
+                                      price: double.tryParse(
+                                          orderController.inputprice!),
+                                      clientId:
+                                          orderController.selectedclient?.id!,
                                       quantity: int.tryParse(
-                                          ordercontroller.inputquantity),
-                                      createdTime: DateTime.now());
+                                          orderController.inputquantity!)!,
+                                      createdAt: DateTime.now());
 
-                                  await ordercontroller.saveorderitem(
-                                      ordercontroller.selectedclient, order);
+                                  await orderController.saveorderitem(order);
                                 }
                               },
                               child: Text(
@@ -144,7 +143,7 @@ class Addorder extends StatelessWidget {
               height: 10,
             ),
             GetX<Ordercontroller>(builder: (c) {
-              return Text("Total : ${ordercontroller.totalprice}");
+              return Text("Total : ${c.totalprice}");
             }),
             SizedBox(
               height: 50,
@@ -160,18 +159,18 @@ class Addorder extends StatelessWidget {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(8),
                               child: Slidable(
-                                actionExtentRatio: 0.2,
-                                actions: [
-                                  IconSlideAction(
-                                    onTap: () {
-                                      c.removeorderitem(c.listoforders[idx],
-                                          c.selectedclient);
-                                    },
-                                    icon: Icons.delete,
-                                    color: Colors.grey[600],
-                                  )
-                                ],
-                                actionPane: SlidableDrawerActionPane(),
+                                startActionPane: ActionPane(
+                                    motion: const ScrollMotion(),
+                                    children: [
+                                      SlidableAction(
+                                        onPressed: (ctx) {
+                                          c.removeorderitem(c.listoforders[idx],
+                                              );
+                                        },
+                                        icon: Icons.delete,
+                                        backgroundColor: Colors.grey.shade500,
+                                      )
+                                    ]),
                                 child: Container(
                                   width: double.infinity,
                                   color: Colors.grey[600],
@@ -185,10 +184,9 @@ class Addorder extends StatelessWidget {
                                           CrossAxisAlignment.center,
                                       children: [
                                         Text(
-                                          c.listoforders[idx].ordername,
+                                          c.listoforders[idx].name!,
                                           style: TextStyle(
                                               fontFamily: 'PatrickHand',
-
                                               fontSize: 18,
                                               fontWeight: FontWeight.w400,
                                               color: Colors.white,
@@ -198,7 +196,6 @@ class Addorder extends StatelessWidget {
                                         Text("${c.listoforders[idx].price} DA",
                                             style: TextStyle(
                                                 fontFamily: 'PatrickHand',
-
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.w400,
                                                 color: Colors.white,
@@ -214,10 +211,9 @@ class Addorder extends StatelessWidget {
                                                 letterSpacing: 1.2),
                                             softWrap: true),
                                         Text(
-                                            "created At : ${DateFormat.yMd().add_Hm().format(c.listoforders[idx].createdAt)}",
+                                            "created At : ${DateFormat.yMd().add_Hm().format(c.listoforders[idx].createdAt!)}",
                                             style: TextStyle(
                                                 fontSize: 18,
-                                                fontFamily: 'PatrickHand',
                                                 fontWeight: FontWeight.w400,
                                                 color: Colors.white,
                                                 letterSpacing: 1.2),

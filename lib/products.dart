@@ -1,9 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:test_app/addproduct.dart';
+import 'package:test_app/core/utils/app_colors.dart';
+import 'package:test_app/core/utils/app_strings.dart';
 import 'controllers/productscontroller.dart';
+import 'core/utils/constants.dart';
 
 class Products extends StatelessWidget {
   final ProductsController controller = Get.put(ProductsController());
@@ -14,7 +16,7 @@ class Products extends StatelessWidget {
       body: SafeArea(
         child: Container(
           width: double.infinity,
-          padding: EdgeInsets.all(20),
+          padding: EdgeInsets.all(padding),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -25,90 +27,85 @@ class Products extends StatelessWidget {
                     },
                     icon: Icon(Icons.add_circle_rounded),
                     iconSize: 80,
-                      color: Colors.indigo[700]),
-                margin: EdgeInsets.symmetric(vertical: 20),
+                    color:AppColors.primary),
               ),
+              SizedBox(height: sizedboxheight,),
               Flexible(child: GetX<ProductsController>(builder: (controller) {
                 if (controller.listofproducts.length == 0) {
-                  return Center(child: Text('no items'));
+                  return Center(child: Text(AppStrings.noItems));
                 } else
                   return ListView.separated(
                       itemBuilder: (context, idx) {
                         return ClipRRect(
                           borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(10),
-                              bottomRight: Radius.circular(10)),
+                              topLeft: Radius.circular(borderradius),
+                              bottomRight: Radius.circular(borderradius)),
                           child: Slidable(
-                            actionPane: SlidableDrawerActionPane(),
-                            child: Container(
-                              color: Colors.grey[600],
-                              padding: EdgeInsets.symmetric(vertical: 20),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                              child: Container(
+                                color: AppColors.slidableBackground,
+                                padding: EdgeInsets.symmetric(vertical: padding),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      flex: 3,
+                                      child: Text(
+                                          controller.listofproducts
+                                              .elementAt(idx)
+                                              .productname!,
+                                          softWrap: true,
+                                          textAlign: TextAlign.center,
+                                          style: context.textTheme.bodyMedium),
+                                    ),
+                                    Expanded(
+                                      flex: 2,
+                                      child: Text(
+                                        AppStrings.price +
+                                            ": ${controller.listofproducts[idx].price!.toStringAsFixed(0)} " +
+                                            AppStrings.dzdCurrency,
+                                        softWrap: true,
+                                        style: context.textTheme.bodyMedium,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              startActionPane: ActionPane(
+                                motion: ScrollMotion(),
                                 children: [
-                                  Expanded(
-                                    flex: 3,
-                                    child: Text(
-                                      controller.listofproducts
-                                          .elementAt(idx)
-                                          .productname,
-                                      softWrap: true,
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontFamily: 'PatrickHand',
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w400,
-                                          color: Colors.white,
-                                          letterSpacing: 1.2),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 2,
-                                    child: Text(
-
-                                      "price : ${controller.listofproducts[idx].price.toStringAsFixed(0)} DA",
-                                      softWrap: true,
-                                      style: TextStyle(
-                                          fontFamily: 'PatrickHand',
-
-                                          fontSize: 18,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w400,
-                                          letterSpacing: 1.2),
-                                    ),
+                                  SlidableAction(
+                                    backgroundColor:
+                                        AppColors.slidableBackground,
+                                    icon: Icons.edit,
+                                    onPressed: (ctx) {
+                                      Get.to(() => Addproduct(),
+                                          arguments:
+                                              controller.listofproducts[idx]);
+                                    },
                                   )
                                 ],
                               ),
-                            ),
-                            actions: [
-                              IconSlideAction(
-                                color: Colors.grey[600].withOpacity(0.7),
-                                icon: Icons.edit,
-                                onTap: () {
-                                  Get.to(() => Addproduct(),
-                                      arguments:
+                              endActionPane: ActionPane(
+                                motion: ScrollMotion(),
+                                children: [
+                                  SlidableAction(
+                                    backgroundColor:
+                                        AppColors.slidableBackground,
+                                    icon: Icons.delete,
+                                    onPressed: (ctx) {
+                                      controller.removeproduct(
                                           controller.listofproducts[idx]);
-                                },
-                              )
-                            ],
-                            secondaryActions: [
-                              IconSlideAction(
-                                color: Colors.grey[600].withOpacity(0.7),
-                                icon: Icons.delete,
-                                onTap: () {
-                                  controller.removeproduct(
-                                      controller.listofproducts[idx]);
-                                },
-                              )
-                            ],
-                          ),
+                                    },
+                                  )
+                                ],
+                              )),
                         );
                       },
                       physics: BouncingScrollPhysics(),
                       separatorBuilder: (context, int) {
                         return SizedBox(
-                          height: 20,
+                          height: sizedboxheight,
                         );
                       },
                       itemCount: controller.listofproducts.length);

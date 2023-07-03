@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:test_app/barcode_icons.dart';
 import 'package:test_app/controllers/productvalidationform.dart';
-import 'package:test_app/utils/dbhelper.dart';
+import 'package:test_app/core/utils/app_strings.dart';
 
 
 
@@ -13,12 +13,12 @@ class Addproduct extends StatefulWidget {
 
 class _AddproductState extends State<Addproduct> with TickerProviderStateMixin {
   final ProductValidationForm c = Get.put(ProductValidationForm());
-  Animation<double> opacity,opacity2,opacity3;
-  AnimationController animationController;
+  late Animation<double> opacity,opacity2,opacity3;
+  late AnimationController animationController;
 
 @override
 void initState() {
-    // TODO: implement initState
+ 
 animationController=AnimationController(vsync: this,duration: Duration(seconds: 1));
  opacity=Tween<double>(begin: 0.0,end: 1.0)
       .animate(CurvedAnimation(parent: animationController, curve:Interval(0, 0.33,curve: Curves.easeIn) ));
@@ -30,7 +30,6 @@ opacity3=Tween<double>(begin: 0.0,end: 1.0)
     super.initState();
   }
   void dispose() {
-    // TODO: implement dispose
   animationController.dispose();
     super.dispose();
   }
@@ -61,7 +60,7 @@ opacity3=Tween<double>(begin: 0.0,end: 1.0)
                       decoration: InputDecoration(labelText: "Name"),
                       validator: ProductValidationForm.namevalidator,
                       onSaved: (value) {
-                        c.inputproductname = value;
+                        c.inputproductname = value!;
                       },
                       controller: c.productnamecontroller,
                     ),
@@ -70,10 +69,10 @@ opacity3=Tween<double>(begin: 0.0,end: 1.0)
                     opacity: opacity2,
                     child: TextFormField(
                       keyboardType: TextInputType.number,
-                      decoration: InputDecoration(labelText: "Price"),
+                      decoration: InputDecoration(labelText: AppStrings.price),
                       validator: ProductValidationForm.pricevalidator,
                       onSaved: (value) {
-                        c.inputproductprice = value;
+                        c.inputproductprice = value!;
                       },
                       controller: c.pricecontroller,
                     ),
@@ -87,7 +86,7 @@ opacity3=Tween<double>(begin: 0.0,end: 1.0)
                           labelText: "barcode",
                           suffixIcon: IconButton(
                               onPressed: () async {
-                                c.barcodecontroller.text =await c.pc.getbarcodewithcam();
+                              //  c.barcodecontroller.text =await c.pc.getbarcodewithcam();
                               },
                               icon: Icon(
                                 Barcode.barcode_scan,
@@ -95,7 +94,7 @@ opacity3=Tween<double>(begin: 0.0,end: 1.0)
                               ))),
                       validator: ProductValidationForm.barcodevalidator,
                       onSaved: (value) {
-                        c.inputproductbarcode = value;
+                        c.inputproductbarcode = value!;
                       },
                     ),
                   ),
@@ -103,7 +102,7 @@ opacity3=Tween<double>(begin: 0.0,end: 1.0)
                     padding: const EdgeInsets.symmetric(vertical: 10.0),
                     child: ElevatedButton(
                         onPressed: () {
-                          c.isproductformvalid();
+                          c.addOrUpdateProduct();
                         },
                         child: Text('submit')),
                   )

@@ -3,6 +3,9 @@ import 'package:get/get.dart';
 import 'package:test_app/barcode_icons.dart';
 import 'package:test_app/clients.dart';
 import 'package:test_app/controllers/productscontroller.dart';
+import 'package:test_app/core/utils/app_colors.dart';
+import 'package:test_app/core/utils/app_strings.dart';
+import 'package:test_app/core/utils/constants.dart';
 import 'package:test_app/products.dart';
 
 class Homepage extends StatefulWidget {
@@ -26,7 +29,6 @@ class _HomepageState extends State<Homepage> {
           else
             c.showsearchedproduct.value = false;
         },
-        backgroundColor: Colors.indigo[700],
       ),
       appBar: AppBar(),
       body: SafeArea(
@@ -51,7 +53,6 @@ class _HomepageState extends State<Homepage> {
                           Icon(
                             Icons.account_box,
                             size: 150,
-                            color: Colors.indigo[700],
                           ),
                           Container(
                             margin: EdgeInsets.only(bottom: 5),
@@ -60,16 +61,12 @@ class _HomepageState extends State<Homepage> {
                             decoration: BoxDecoration(
                                 color: Colors.indigo[700],
                                 border: Border.all(
-                                    width: 0.5, color: Colors.grey[500]),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Text(
-                              "Clients",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 22,
-                                  letterSpacing: 1.2,
-                                  color: Colors.white),
-                            ),
+                                    width: borderwidth,
+                                    color: Colors.grey.shade500),
+                                borderRadius:
+                                    BorderRadius.circular(borderradius)),
+                            child: Text("Clients",
+                                style: context.textTheme.bodyMedium),
                           )
                         ]),
                       )),
@@ -84,26 +81,24 @@ class _HomepageState extends State<Homepage> {
                   child: Card(
                       elevation: 5,
                       child: Padding(
-                        padding: EdgeInsets.all(8.0),
+                        padding: EdgeInsets.all(cardpadding),
                         child: Column(children: [
-                          Icon(Icons.article,
-                              size: 150, color: Colors.indigo[700]),
+                          Icon(
+                            Icons.article,
+                            size: articleiconsize,
+                          ),
                           Container(
-                            margin: EdgeInsets.only(bottom: 5),
-                            padding: EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 10),
+                            padding: EdgeInsets.all(padding),
                             decoration: BoxDecoration(
-                                color: Colors.indigo[700],
+                                color: AppColors.primary,
                                 border: Border.all(
-                                    width: 0.5, color: Colors.grey[500]),
-                                borderRadius: BorderRadius.circular(10)),
+                                    width: borderwidth,
+                                    color: AppColors.borderColor),
+                                borderRadius:
+                                    BorderRadius.circular(borderradius)),
                             child: Text(
                               "products",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 22,
-                                  letterSpacing: 1.2,
-                                  color: Colors.white),
+                              style: context.textTheme.headlineLarge,
                             ),
                           )
                         ]),
@@ -111,10 +106,9 @@ class _HomepageState extends State<Homepage> {
                 ),
               ),
               SizedBox(
-                height: 10,
+                height: sizedboxheight,
               ),
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 30),
                 child: GetX<ProductsController>(builder: (ch) {
                   if (c.showsearchedproduct.value) {
                     return Card(
@@ -126,14 +120,17 @@ class _HomepageState extends State<Homepage> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
-                              "name: ${c.searchedproduct.productname}",
-                              style: TextStyle(fontSize: 16),
+                              "name: ${c.searchedproduct!.productname}",
+                              style: context.textTheme.headlineMedium,
                             ),
                             SizedBox(
-                              height: 10,
+                              height: sizedboxheight,
                             ),
-                            Text("Price : ${c.searchedproduct.price} DA",
-                                style: TextStyle(fontSize: 16)),
+                            Text(
+                                AppStrings.price +
+                                    ": ${c.searchedproduct!.price} " +
+                                    AppStrings.dzdCurrency,
+                                style: context.textTheme.headlineMedium),
                           ],
                         ),
                       ),

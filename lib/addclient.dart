@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/controllers/clientformvalidation.dart';
 import 'package:get/get.dart';
+import 'package:test_app/core/utils/app_strings.dart';
+import 'package:test_app/core/utils/constants.dart';
 
 class AddClient extends StatefulWidget {
   @override
@@ -8,8 +10,8 @@ class AddClient extends StatefulWidget {
 }
 
 class _AddClientState extends State<AddClient> with TickerProviderStateMixin {
-   AnimationController animationController;
-  Animation<double> opacity, opacity2, opacity3, opacity4;
+   late AnimationController animationController;
+  late Animation<double> opacity, opacity2, opacity3, opacity4;
   final ClientFormValidation cfv = Get.put(ClientFormValidation());
 
   @override
@@ -44,7 +46,7 @@ class _AddClientState extends State<AddClient> with TickerProviderStateMixin {
     return Scaffold(
       body: Container(
         width: double.infinity,
-        padding: EdgeInsets.all(30),
+        padding: EdgeInsets.all(padding),
         child: Center(
             child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -60,10 +62,10 @@ class _AddClientState extends State<AddClient> with TickerProviderStateMixin {
                       //first name
                       controller: cfv.inputfirstnamecontroller,
                       textInputAction: TextInputAction.next,
-                      decoration: InputDecoration(labelText: "FirstName"),
+                      decoration: InputDecoration(labelText: AppStrings.firstName),
                       validator: ClientFormValidation.namevalidator,
                       onSaved: (value) {
-                        cfv.inputfirstname = value;
+                        cfv.inputfirstname = value!;
                       },
                     ),
                   ),
@@ -73,10 +75,10 @@ class _AddClientState extends State<AddClient> with TickerProviderStateMixin {
                       //lastname
                       controller: cfv.inputlastnamecontroller,
                       textInputAction: TextInputAction.next,
-                      decoration: InputDecoration(labelText: "lastname"),
+                      decoration: InputDecoration(labelText: AppStrings.lastName),
                       validator: ClientFormValidation.namevalidator,
                       onSaved: (value) {
-                        cfv.inputlastname = value;
+                        cfv.inputlastname = value!;
                       },
                     ),
                   ),
@@ -86,10 +88,10 @@ class _AddClientState extends State<AddClient> with TickerProviderStateMixin {
                       controller: cfv.inputphonenumbercontroller,
                       textInputAction: TextInputAction.next,
                       keyboardType: TextInputType.phone,
-                      decoration: InputDecoration(labelText: "Phonenumber"),
+                      decoration: InputDecoration(labelText: AppStrings.phoneNumber),
                       validator: ClientFormValidation.phonevalidator,
                       onSaved: (value) {
-                        cfv.inputphonenumber = value;
+                        cfv.inputphonenumber = value!;
                       },
                     ),
                   ),
@@ -98,11 +100,11 @@ class _AddClientState extends State<AddClient> with TickerProviderStateMixin {
                     child: TextFormField(
                       //balance
                       controller: cfv.inputbalancecontroller,
-                      decoration: InputDecoration(labelText: "balance"),
+                      decoration: InputDecoration(labelText: AppStrings.balance),
                       keyboardType: TextInputType.number,
                       validator: ClientFormValidation.balancevalidator,
                       onSaved: (value) {
-                        cfv.inputbalance = value;
+                        cfv.inputbalance = value!;
                       },
                     ),
                   ),
@@ -112,7 +114,7 @@ class _AddClientState extends State<AddClient> with TickerProviderStateMixin {
                         onPressed: () {
                           cfv.isclientformvalid();
                         },
-                        child: Text('submit')),
+                        child: Text(AppStrings.submit)),
                   )
                 ],
               ),

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:test_app/Homepage.dart';
+import 'package:test_app/core/utils/app_strings.dart';
+
+import 'core/utils/constants.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -10,89 +13,80 @@ class Login extends StatefulWidget {
 GlobalKey<FormState> globalformkey = GlobalKey<FormState>();
 
 class _LoginState extends State<Login> {
-
   bool isvisible = false;
   @override
   Widget build(BuildContext context) {
-    var size=MediaQuery.of(context).size;
     return Scaffold(
         body: Container(
-            padding: EdgeInsets.all(10),
+            margin: EdgeInsets.all(margin),
+            padding: EdgeInsets.all(padding),
             child: Center(
               child: Form(
                 key: globalformkey,
                 child: Column(
-
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
+                    /*     Container(
                       margin: EdgeInsets.symmetric(vertical: 10),
-                      width:size.width ,
+                      width: size.width,
                       height: 120,
                       child: CustomPaint(
-                      //  child: Align(child: Text('hello',style: TextStyle(fontSize: 30,color: Colors.white,fontFamily: 'PatrickHand')),alignment: Alignment.bottomCenter,),
-                        painter:mycustompaint() ,
+                        //  child: Align(child: Text('hello',style: TextStyle(fontSize: 30,color: Colors.white,fontFamily: 'PatrickHand')),alignment: Alignment.bottomCenter,),
+                        painter: MyCustomPaint(),
                       ),
-                    ),
+                    ), */
                     TextFormField(
                       textInputAction: TextInputAction.next,
                       validator: (val) {
-                        return val == "admin" ? null : "not valid";
+                        return val == USERNAME ? null : AppStrings.notValid;
                       },
-                      style: TextStyle(fontSize: 20),
+                      style: context.textTheme.headlineMedium,
                       decoration: InputDecoration(
-                          labelText: "USERNAME",
-                          labelStyle: TextStyle(fontSize: 12),
-                          border: OutlineInputBorder(
-                              borderSide: BorderSide(width: 1))),
+                        labelText: USERNAME,
+                      ),
                     ),
-                    SizedBox(height: 10),
+                    SizedBox(height: sizedboxheight),
                     TextFormField(
                       validator: (val) {
-                        return val == "password" ? null : "not valid";
+                        return val == PASSWORD ? null : AppStrings.notValid;
                       },
                       obscureText: !isvisible,
-                      style: TextStyle(fontSize: 20),
+                      style: context.textTheme.headlineMedium,
                       textInputAction: TextInputAction.go,
                       onFieldSubmitted: (v) {
-                        if (globalformkey.currentState.validate()) {
+                        if (globalformkey.currentState!.validate()) {
                           Get.off(() => Homepage());
                         }
                       },
                       decoration: InputDecoration(
-                          labelText: "PASSWORD",
-                          suffixIcon: IconButton(
-                            icon: Icon(isvisible
-                                ? Icons.visibility_off
-                                : Icons.visibility),
-                            onPressed: () {
-                              setState(() {
-                                isvisible = !isvisible;
-                              });
-                            },
-                          ),
-                          labelStyle: TextStyle(fontSize: 12),
-                          border: OutlineInputBorder(
-                              borderSide: BorderSide(width: 1))),
+                        labelText: PASSWORD,
+                        suffixIcon: IconButton(
+                          icon: Icon(isvisible
+                              ? Icons.visibility_off
+                              : Icons.visibility),
+                          onPressed: () {
+                            setState(() {
+                              isvisible = !isvisible;
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: sizedboxheight * 2,
                     ),
                     Container(
                       width: double.infinity,
-                      margin:
-                          EdgeInsets.symmetric(horizontal: 80, vertical: 50),
                       child: ElevatedButton(
-
-                          onPressed: () {
-                            if (globalformkey.currentState.validate()) {
-                              Get.off(() => Homepage());
-                            }
-                          },
-                          style: ElevatedButton.styleFrom(
-                              primary: Colors.indigo[700],
-                              padding: EdgeInsets.all(10)),
-                          child: Text(
-                            'Sign in',
-                            style: TextStyle(fontSize: 20, letterSpacing: 1),
-                          ),
+                        onPressed: () {
+                          if (globalformkey.currentState != null &&
+                              globalformkey.currentState!.validate()) {
+                            Get.off(() => Homepage());
+                          }
+                        },
+                        child: Text(
+                          AppStrings.signIn,
+                        ),
                       ),
                     )
                   ],
@@ -102,26 +96,22 @@ class _LoginState extends State<Login> {
   }
 }
 
-class mycustompaint extends CustomPainter
-{
+class MyCustomPaint extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    Path path=Path();
-Paint paint =Paint()..color=Colors.indigo[700];
-    path.lineTo(0.25*size.width, 0);
-    path.lineTo(0.5*size.width, 0.5*size.height);
-    path.lineTo(0.75*size.width, 0);
+    Path path = Path();
+    Paint paint = Paint()..color = Colors.indigo.shade700;
+    path.lineTo(0.25 * size.width, 0);
+    path.lineTo(0.5 * size.width, 0.5 * size.height);
+    path.lineTo(0.75 * size.width, 0);
     path.lineTo(size.width, 0);
     path.lineTo(size.width, size.height);
-    path.lineTo(0,size.height );
+    path.lineTo(0, size.height);
     canvas.drawPath(path, paint);
-    // TODO: implement paint
   }
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
     return false;
   }
-
-
 }

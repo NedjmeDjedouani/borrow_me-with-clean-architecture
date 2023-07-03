@@ -1,39 +1,59 @@
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:get/get.dart';
-import 'package:test_app/utils/dbhelper.dart';
-import 'package:test_app/models/product.dart';
+import 'package:test_app/core/usecases/usecase.dart';
+import 'package:test_app/features/order/domain/entities/productentity.dart';
+import 'package:test_app/features/order/domain/usecases/product/addproductusecase.dart';
+import 'package:test_app/features/order/domain/usecases/product/getallproductsusecase.dart';
+import 'package:test_app/features/order/domain/usecases/product/removeproductusecase.dart';
+import 'package:test_app/features/order/domain/usecases/product/searchproductusecase.dart';
 
 class ProductsController extends GetxController {
-  List<Product> suggestions = [];
-  RxList<Product> listofproducts = <Product>[].obs;
+  List<ProductEntity> suggestions = [];
+  RxList<ProductEntity> listofproducts = <ProductEntity>[].obs;
   Rx<bool> showsearchedproduct = false.obs;
-  Product searchedproduct;
-  DbHelper dbHelper = DbHelper();
+  ProductEntity? searchedproduct;
+  RxBool isLoading = false.obs;
+  RxString error = "".obs;
+  GetAllProductsUseCase _getAllProductsUseCase = Get.find();
+  SearchProductUseCase _searchProductUseCase = Get.find();
+  AddProductUseCase _addProductUseCase = Get.find();
+  RemoveProductUseCase _removeProductUseCase = Get.find();
+
   @override
   onInit() {
     getallproducts();
     super.onInit();
   }
 
-  getallproducts() {
-    dbHelper
-        .getallproductslist()
-        .then((value) => listofproducts.assignAll(value));
+  Future<void> getallproducts() async {
+    try {
+      isLoading.value = true;
+      listofproducts.value = await _getAllProductsUseCase(NoParams());
+    } catch (e) {
+    } finally {
+      isLoading.value = false;
+    }
   }
 
-  addproduct(Product product) {
-    dbHelper.createproduct(product);
-    getallproducts();
+  Future<void> addproduct(ProductEntity product) async {
+    try {
+      isLoading.value = true;
+      await _addProductUseCase(product);
+      listofproducts.add(product);
+      isLoading.value = false;
+    } catch (e) {
+    } finally {}
   }
 
-  removeproduct(Product product) {
-    dbHelper.removeproduct(product).then((value) {
-      if (value > 0) {
-        //  int idx=listofproducts.indexWhere((element) => element.id==product.id);
-        //  listofproducts.removeAt(idx);
-        listofproducts.remove(product);
-      }
-    });
+  Future<void> removeproduct(ProductEntity product) async {
+    try {
+      isLoading.value = true;
+      await _removeProductUseCase(product.id!);
+      listofproducts.remove(product);
+    } catch (e) {
+    } finally {
+      isLoading.value = false;
+    }
   }
 
   Future<String> getbarcodewithcam() async {
@@ -42,33 +62,48 @@ class ProductsController extends GetxController {
     return barcodeScanRes;
   }
 
-  Future<List<Product>> getproducts(String v) async {
-    suggestions.clear();
-    if (v.isNotEmpty) {
-      await dbHelper.searchproduct(v).then((value) => {
-            for (int i = 0; i < value.length; i++)
-              {suggestions.add(Product.frommap(value[i]))}
-          });
-      return suggestions;
+  Future<List<ProductEntity>> searchProduct(String v) async {
+    try {
+      isLoading.value = true;
+      suggestions.clear();
+      if (v.isNotEmpty) {
+        suggestions.addAll(await _searchProductUseCase(v));
+        return suggestions;
+      }
+            return [];
+
+    } catch (e) {
+      
+      return [];
+    } finally {
+      isLoading.value = false;
     }
-    return null;
   }
 
-  editproduct(Product product) {
-    int idx = listofproducts.indexWhere((element) => element.id == product.id);
-    listofproducts[idx] = product;
-    dbHelper.updateproduct(product);
+  Future<void> editproduct(ProductEntity product) async {
+    try {
+      isLoading.value = true;
+      await editproduct(product);
+      int idx =
+          listofproducts.indexWhere((element) => element.id == product.id);
+      listofproducts[idx] = product;
+    } catch (e) {
+    } finally {
+      isLoading.value = false;
+    }
   }
 
   bool isProductexist(String barcode) {
     return searchProductWithbarcode(barcode) == null ? false : true;
   }
 
-  Product searchProductWithbarcode(String barcode) {
-    Product searchedproduct = listofproducts
-        .firstWhere((element) => barcode == element.barcode, orElse: () {
+  ProductEntity? searchProductWithbarcode(String barcode) {
+    try {
+      ProductEntity searchedproduct =
+          listofproducts.firstWhere((element) => barcode == element.barcode);
+      return searchedproduct;
+    } catch (e) {
       return null;
-    });
-    return searchedproduct;
+    }
   }
 }
