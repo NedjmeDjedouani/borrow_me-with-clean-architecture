@@ -7,18 +7,27 @@ import 'features/order/data/di/injector.dart';
 import 'login.dart';
 
 void main() {
-  runApp(Myapp());
+  runApp(const Myapp());
 }
 
 class Myapp extends StatelessWidget {
+  const Myapp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       initialBinding: AppBindings(),
       debugShowCheckedModeBanner: false,
-      home: Login(),
+      home: const Login(),
       theme: ThemeData(
-        cardTheme: CardTheme(
+        appBarTheme: AppBarTheme(color: AppColors.primary),
+        iconTheme: IconThemeData(
+          color: AppColors.iconColor,
+        ),
+        iconButtonTheme: IconButtonThemeData(
+            style: IconButton.styleFrom(
+                iconSize: 80, backgroundColor: AppColors.primary)),
+        cardTheme: const CardTheme(
           elevation: cardelevation,
         ),
         inputDecorationTheme: InputDecorationTheme(
@@ -26,28 +35,28 @@ class Myapp extends StatelessWidget {
             borderRadius: BorderRadius.circular(borderradius),
             borderSide: BorderSide(
                 color: AppColors.borderColor,
-                width: borderwidth ,
+                width: borderwidth,
                 style: BorderStyle.solid),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(borderradius),
             borderSide: BorderSide(
                 color: AppColors.borderColor,
-                width: borderwidth ,
+                width: borderwidth,
                 style: BorderStyle.solid),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(borderradius),
             borderSide: BorderSide(
                 color: AppColors.primary!,
-                width: borderwidth ,
+                width: borderwidth,
                 style: BorderStyle.solid),
           ),
           labelStyle: context.textTheme.headlineSmall,
           border: OutlineInputBorder(
             borderSide: BorderSide(
               style: BorderStyle.solid,
-              width: borderwidth ,
+              width: borderwidth,
               color: AppColors.primary!,
             ),
             borderRadius: BorderRadius.circular(borderradius),
@@ -60,7 +69,7 @@ class Myapp extends StatelessWidget {
               foregroundColor: Colors.white,
               textStyle: context.textTheme.headlineLarge,
               backgroundColor: AppColors.primary,
-              padding: EdgeInsets.all(buttonpadding)),
+              padding: const EdgeInsets.all(buttonpadding)),
         ),
         fontFamily: 'PatrickHand',
         primaryColor: AppColors.primary,

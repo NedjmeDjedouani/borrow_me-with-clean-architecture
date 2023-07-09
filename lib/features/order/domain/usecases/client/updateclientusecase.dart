@@ -4,7 +4,7 @@ import 'package:test_app/features/order/domain/repositories/clientrepository.dar
 
 class UpdateClientUseCase implements UseCase<Future<void>, ClientEntity> {
   UpdateClientUseCase(this._clientRepository);
-  ClientRepository _clientRepository;
+  final ClientRepository _clientRepository;
 
   @override
   Future<void> call(ClientEntity client) async {

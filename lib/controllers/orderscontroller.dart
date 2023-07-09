@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:test_app/controllers/statecontroller.dart';
 import 'package:test_app/features/order/domain/entities/cliententity.dart';
 import 'package:test_app/features/order/domain/entities/orderentity.dart';
 import 'package:test_app/features/order/domain/usecases/order/addorderusecase.dart';
@@ -7,14 +8,12 @@ import 'package:test_app/features/order/domain/usecases/order/getordersbyclientu
 import 'package:test_app/features/order/domain/usecases/order/removeorderusecase.dart';
 import 'package:test_app/utils/utils.dart';
 
-
-class Ordercontroller extends GetxController {
-  AddOrderUseCase _addOrderUseCase = Get.find();
-  RemoveOrderUseCase _removeOrderUseCase = Get.find();
-  GetOrdersByClientUseCase _getOrdersByClientUseCase = Get.find();
+class Ordercontroller extends StateController {
+  final AddOrderUseCase _addOrderUseCase = Get.find();
+  final RemoveOrderUseCase _removeOrderUseCase = Get.find();
+  final GetOrdersByClientUseCase _getOrdersByClientUseCase = Get.find();
   var totalprice = 0.0.obs;
   var listoforders = <OrderEntity>[].obs;
-  RxBool isLoading = false.obs;
   ClientEntity? selectedclient;
   String? inputordername, inputprice, inputquantity;
   final GlobalKey<FormState> globalformkey = GlobalKey<FormState>();
@@ -49,52 +48,41 @@ class Ordercontroller extends GetxController {
     if (Utils.isNumeric(value)) {
       inputprice = value;
       inputordername = "Unknown";
-    } else
+    } else {
       inputordername = value;
-  }
-
-  Future<void> getlistoforders(ClientEntity client) async {
-    try {
-      isLoading.value = true;
-      listoforders.value = await _getOrdersByClientUseCase(client.id!);
-        totalprice.value = calculatetotalprice();
-    } catch (e) {
-    } finally {
-      isLoading.value = false;
     }
   }
 
+  Future<void> getlistoforders(ClientEntity client) async {
+    excute(() async {
+      listoforders.value = await _getOrdersByClientUseCase(client.id!);
+      totalprice.value = calculatetotalprice();
+    });
+  }
+
   saveorderitem(OrderEntity order) async {
-    try {
-      isLoading.value = true;
-      if (order.clientId != null) {
+    if (order.clientId != null) {
+      excute(() async {
         await _addOrderUseCase(order);
         listoforders.add(order);
         addtototalprice(order);
-      }
-    } catch (e) {
-    } finally {
-      isLoading.value = false;
+      });
     }
   }
 
   removeorderitem(OrderEntity order) async {
-    try {
-      isLoading.value = true;
+    excute(() async {
       await _removeOrderUseCase(order.id!);
       listoforders.remove(order);
       subtractfromtotalprice(order);
-    } catch (e) {
-    } finally {
-      isLoading.value = false;
-    }
+    });
   }
 
   double calculatetotalprice() {
     var totalprice = 0.0;
-    listoforders.forEach((element) {
+    for (var element in listoforders) {
       totalprice = totalprice + element.price! * element.quantity!;
-    });
+    }
     return totalprice;
   }
 }

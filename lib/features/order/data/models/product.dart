@@ -1,15 +1,15 @@
 import 'package:test_app/features/order/domain/entities/productentity.dart';
 
 class ProductKeys {
-  static final id = "id";
-  static final barCode = "bar_code";
-  static final name = "name";
-  static final price = "price";
-  static final createdAt = "created_at";
+  static const id = "id";
+  static const barCode = "barcode";
+  static const name = "name";
+  static const price = "price";
+  static const createdAt = "created_at";
 }
 
 class ProductModel extends ProductEntity {
-  ProductModel(
+  const ProductModel(
       {String? barcode,
       String? id,
       DateTime? createdAt,
@@ -25,11 +25,10 @@ class ProductModel extends ProductEntity {
   factory ProductModel.fromMap(Map<String, dynamic> map) {
     return ProductModel(
         barcode: map[ProductKeys.barCode],
-        createdAt:
-            DateTime.fromMillisecondsSinceEpoch(map[ProductKeys.createdAt]),
-        id: map[ProductKeys.id],
+        createdAt: DateTime.parse(map[ProductKeys.createdAt]),
+        id: map[ProductKeys.id].toString(),
         name: map[ProductKeys.name],
-        price: map[ProductKeys.price]);
+        price: double.parse(map[ProductKeys.price].toString()));
   }
 
   Map<String, dynamic> toMap() => {

@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:test_app/Homepage.dart';
+import 'package:test_app/home_page.dart';
 import 'package:test_app/core/utils/app_strings.dart';
 
 import 'core/utils/constants.dart';
 
 class Login extends StatefulWidget {
+  const Login({super.key});
+
   @override
-  _LoginState createState() => _LoginState();
+  LoginState createState() => LoginState();
 }
 
 GlobalKey<FormState> globalformkey = GlobalKey<FormState>();
 
-class _LoginState extends State<Login> {
+class LoginState extends State<Login> {
   bool isvisible = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-            margin: EdgeInsets.all(margin),
-            padding: EdgeInsets.all(padding),
+            margin: const EdgeInsets.all(margin),
+            padding: const EdgeInsets.all(padding),
             child: Center(
               child: Form(
                 key: globalformkey,
@@ -38,28 +40,28 @@ class _LoginState extends State<Login> {
                     TextFormField(
                       textInputAction: TextInputAction.next,
                       validator: (val) {
-                        return val == USERNAME ? null : AppStrings.notValid;
+                        return val == username ? null : AppStrings.notValid;
                       },
                       style: context.textTheme.headlineMedium,
-                      decoration: InputDecoration(
-                        labelText: USERNAME,
+                      decoration: const InputDecoration(
+                        labelText: username,
                       ),
                     ),
-                    SizedBox(height: sizedboxheight),
+                    const SizedBox(height: sizedboxheight),
                     TextFormField(
                       validator: (val) {
-                        return val == PASSWORD ? null : AppStrings.notValid;
+                        return val == password ? null : AppStrings.notValid;
                       },
                       obscureText: !isvisible,
                       style: context.textTheme.headlineMedium,
                       textInputAction: TextInputAction.go,
                       onFieldSubmitted: (v) {
                         if (globalformkey.currentState!.validate()) {
-                          Get.off(() => Homepage());
+                          Get.off(() => const Homepage());
                         }
                       },
                       decoration: InputDecoration(
-                        labelText: PASSWORD,
+                        labelText: password,
                         suffixIcon: IconButton(
                           icon: Icon(isvisible
                               ? Icons.visibility_off
@@ -72,19 +74,19 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: sizedboxheight * 2,
                     ),
-                    Container(
+                    SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
                           if (globalformkey.currentState != null &&
                               globalformkey.currentState!.validate()) {
-                            Get.off(() => Homepage());
+                            Get.off(() => const Homepage());
                           }
                         },
-                        child: Text(
+                        child: const Text(
                           AppStrings.signIn,
                         ),
                       ),

@@ -8,12 +8,12 @@ import '../source/client_remote_datasource.dart';
 
 class ClientRemoteDataSourceImp implements ClientRemoteDataSource {
   ClientRemoteDataSourceImp(this.apiConsumer);
-  ApiConsumer apiConsumer;
+  final ApiConsumer apiConsumer;
   @override
   Future<String> addClient(ClientEntity client) async {
     //toClientModel() is an extension
     final data = await apiConsumer.post(
-        endpoint: EndPoints.clients, data: client.toClientModel());
+        endpoint: EndPoints.clients, data: client.toClientModel().toMap());
     return data as String;
   }
 
@@ -22,28 +22,28 @@ class ClientRemoteDataSourceImp implements ClientRemoteDataSource {
     final data =
         await apiConsumer.get(endpoint: EndPoints.clients) as List<dynamic>;
     final List<ClientModel> clientModelList = [];
-    data.forEach((element) {
+    for (var element in data) {
       clientModelList.add(ClientModel.frommap(element));
-    });
+    }
     return clientModelList;
   }
 
   @override
   Future<ClientModel> getClient(String clientId) async {
     final data =
-        await apiConsumer.get(endpoint: EndPoints.clients + "/" + clientId);
+        await apiConsumer.get(endpoint: "${EndPoints.clients}/$clientId");
     return ClientModel.frommap(data);
   }
 
   @override
   Future<void> removeClient(String clientId) async {
-    await apiConsumer.delete(endpoint: EndPoints.clients + "/" + clientId);
+    await apiConsumer.delete(endpoint: "${EndPoints.clients}/$clientId");
   }
 
   @override
   Future<void> updateClient(ClientEntity client) async {
     await apiConsumer.patch(
-        endpoint: EndPoints.clients + "/" + client.id!,
-        data: client.toClientModel());
+        endpoint: "${EndPoints.clients}/${client.id!}",
+        data: client.toClientModel().toMap());
   }
 }

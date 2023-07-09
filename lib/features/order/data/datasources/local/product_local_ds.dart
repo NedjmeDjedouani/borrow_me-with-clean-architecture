@@ -9,7 +9,7 @@ import '../source/product_local_ds.dart';
 class ProductLocalDataSourceImp implements ProductLocalDataSource {
   ProductLocalDataSourceImp(this.localDatabase);
   LocalDatabase localDatabase;
-  ProductEntityMapper _productEntityMapper=ProductEntityMapper();
+  final ProductEntityMapper _productEntityMapper=ProductEntityMapper();
   @override
   addProduct(ProductEntity product) async {
     final id = await localDatabase.into(localDatabase.productLocalModel).insert(
@@ -42,15 +42,15 @@ class ProductLocalDataSourceImp implements ProductLocalDataSource {
           ..where((tbl) => tbl.remoteId.equals(product.id!)))
         .write(ProductLocalModelCompanion(
             name: product.productname == null
-                ? Value.absent()
+                ? const Value.absent()
                 : Value(product.productname!),
             price:
-                product.price == null ? Value.absent() : Value(product.price!),
+                product.price == null ? const Value.absent() : Value(product.price!),
             barcode: product.barcode == null
-                ? Value.absent()
+                ? const Value.absent()
                 : Value(product.barcode!),
             createdAt: product.createdAt == null
-                ? Value.absent()
+                ? const Value.absent()
                 : Value(product.createdAt!)));
   }
 
@@ -59,9 +59,9 @@ class ProductLocalDataSourceImp implements ProductLocalDataSource {
     final products =
         await localDatabase.select(localDatabase.productLocalModel).get();
     final List<ProductModel> productsModelsList = [];
-    products.forEach((element) {
+    for (var element in products) {
       productsModelsList.add(_productEntityMapper.cachedToMap(element));
-    });
+    }
     return productsModelsList;
   }
 }

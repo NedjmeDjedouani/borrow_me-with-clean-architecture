@@ -9,7 +9,7 @@ import '../../repositories/orderrepository.dart';
 
 class RemoveOrderUseCase implements UseCase<Future<void>, String> {
   RemoveOrderUseCase(this._orderRepository);
-  OrderRepository _orderRepository;
+  final OrderRepository _orderRepository;
 
   @override
   Future<void> call(String orderId) async {

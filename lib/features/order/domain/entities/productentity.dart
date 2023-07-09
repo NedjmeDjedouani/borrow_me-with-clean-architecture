@@ -7,11 +7,12 @@ class ProductEntity extends Equatable {
   final String? id;
   final double? price;
   final DateTime? createdAt;
-  ProductEntity(
+  const ProductEntity(
       {this.productname, this.barcode, this.id, this.price, this.createdAt});
 
+  @override
   List<Object?> get props =>
-      [this.productname, this.barcode, this.id, this.price, this.createdAt];
+      [productname, barcode, id, price, createdAt];
 
   ProductEntity copyWith({
     String? productname,

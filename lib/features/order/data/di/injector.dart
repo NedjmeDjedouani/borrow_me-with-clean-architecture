@@ -91,19 +91,19 @@ class AppBindings implements Bindings {
     Get.lazyPut(() => SearchProductUseCase(Get.find()));
 
 // client usecases
-    Get.lazyPut(() => GetClientUseCase(Get.find()));
-    Get.lazyPut(() => GetAllClientUseCase(Get.find()));
-    Get.lazyPut(() => UpdateClientUseCase(Get.find()));
-    Get.lazyPut(() => RemoveClientUseCase(Get.find()));
-    Get.lazyPut(() => AddClientUseCase(Get.find()));
+    Get.lazyPut(() => GetClientUseCase(Get.find()), fenix: true);
+    Get.lazyPut(() => GetAllClientUseCase(Get.find()), fenix: true);
+    Get.lazyPut(() => UpdateClientUseCase(Get.find()), fenix: true);
+    Get.lazyPut(() => RemoveClientUseCase(Get.find()), fenix: true);
+    Get.lazyPut(() => AddClientUseCase(Get.find()), fenix: true);
 
 // order usecases
-    Get.lazyPut(() => AddOrderUseCase(Get.find()));
-    Get.lazyPut(() => RemoveOrderUseCase(Get.find()));
-    Get.lazyPut(() => GetOrderUseCase(Get.find()));
-    Get.lazyPut(() => GetAllOrdersUseCase(Get.find()));
-    Get.lazyPut(() => GetOrdersByClientUseCase(Get.find()));
-    Get.lazyPut(() => RemoveOrderUseCase(Get.find()));
-    Get.lazyPut(() => RemoveOrdersByClientUseCase(Get.find()));
+    Get.lazyPut(() => AddOrderUseCase(Get.find()), fenix: true);
+    Get.lazyPut(() => RemoveOrderUseCase(Get.find()), fenix: true);
+    Get.lazyPut(() => GetOrderUseCase(Get.find()), fenix: true);
+    Get.lazyPut(() => GetAllOrdersUseCase(Get.find()), fenix: true);
+    Get.lazyPut(() => GetOrdersByClientUseCase(Get.find()), fenix: true);
+    Get.lazyPut(() => RemoveOrderUseCase(Get.find()), fenix: true);
+    Get.lazyPut(() => RemoveOrdersByClientUseCase(Get.find()), fenix: true);
   }
 }

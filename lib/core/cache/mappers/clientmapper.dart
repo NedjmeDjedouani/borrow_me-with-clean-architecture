@@ -3,6 +3,7 @@ import 'package:test_app/core/cache/entitymapper.dart';
 
 import '../../../features/order/data/models/client.dart';
 class ClientEntityMapper implements EntityMapper<ClientModel,Client> {
+  @override
   Client mapToCached(ClientModel clientModel) {
     return Client(
         firstName: clientModel.firstname!,
@@ -13,7 +14,8 @@ class ClientEntityMapper implements EntityMapper<ClientModel,Client> {
         lastName: clientModel.lastname);
   }
 
-   ClientModel cachedToMap(Client client) {
+   @override
+  ClientModel cachedToMap(Client client) {
     return ClientModel(
         balance: client.balance,
         createdAt: client.createdAt,

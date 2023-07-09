@@ -4,6 +4,7 @@ import 'package:test_app/features/order/data/models/product.dart';
 
 class ProductEntityMapper implements EntityMapper<ProductModel,Product> {
   
+  @override
   Product mapToCached(ProductModel productEntity) {
     return Product(
         name: productEntity.productname!,
@@ -13,6 +14,7 @@ class ProductEntityMapper implements EntityMapper<ProductModel,Product> {
         createdAt: productEntity.createdAt!);
   }
 
+  @override
   ProductModel cachedToMap(Product product) {
     return ProductModel(
         barcode: product.barcode,

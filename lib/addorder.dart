@@ -12,12 +12,14 @@ import 'package:intl/intl.dart';
 class Addorder extends StatelessWidget {
   final ProductsController productsController = Get.put(ProductsController());
   final Ordercontroller orderController = Get.put(Ordercontroller());
+
+  Addorder({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         width: double.infinity,
-        padding: EdgeInsets.only(top: 50),
+        padding: const EdgeInsets.only(top: 50),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -30,24 +32,26 @@ class Addorder extends StatelessWidget {
                     Expanded(
                       flex: 1,
                       child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: 10),
+                        margin: const EdgeInsets.symmetric(horizontal: 10),
                         child: Row(
                           children: [
                             Expanded(
                                 flex: 3,
                                 child: TypeAheadFormField<ProductEntity>(
-                                  debounceDuration: Duration(milliseconds: 500),
+                                  debounceDuration:
+                                      const Duration(milliseconds: 500),
                                   textFieldConfiguration:
                                       TextFieldConfiguration(
-                                    style: TextStyle(fontSize: 18),
+                                    style: const TextStyle(fontSize: 18),
                                     decoration: InputDecoration(
                                         labelText: "Order name/price",
                                         border: OutlineInputBorder(
                                           borderRadius:
                                               BorderRadius.circular(2),
                                         ),
-                                        contentPadding: EdgeInsets.symmetric(
-                                            horizontal: 5)),
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                                horizontal: 5)),
                                     controller: orderController
                                         .orderinputtextcontroller,
                                   ),
@@ -76,22 +80,22 @@ class Addorder extends StatelessWidget {
                                     }
                                   },
                                 )),
-                            SizedBox(
+                            const SizedBox(
                               width: 10,
                             ),
                             Expanded(
                               flex: 1,
                               child: TextFormField(
                                 keyboardType: TextInputType.number,
-                                style: TextStyle(fontSize: 18),
+                                style: const TextStyle(fontSize: 18),
                                 validator: orderController.quantityvalidator,
                                 decoration: InputDecoration(
                                     labelText: "quantity",
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(2),
                                     ),
-                                    contentPadding:
-                                        EdgeInsets.symmetric(horizontal: 5)),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        horizontal: 5)),
                                 onChanged: (value) {
                                   orderController.inputquantity = value;
                                 },
@@ -109,7 +113,10 @@ class Addorder extends StatelessWidget {
                           ElevatedButton(
                               onPressed: () async {
                                 if (orderController.globalformkey.currentState!
-                                    .validate()) {
+                                        .validate() &&
+                                    orderController.orderinputtextcontroller
+                                        .text.isNotEmpty &&
+                                    orderController.inputprice != null) {
                                   orderController.globalformkey.currentState!
                                       .save();
                                   OrderEntity order = OrderEntity(
@@ -125,7 +132,7 @@ class Addorder extends StatelessWidget {
                                   await orderController.saveorderitem(order);
                                 }
                               },
-                              child: Text(
+                              child: const Text(
                                 'add order',
                                 style: TextStyle(
                                   fontSize: 16,
@@ -139,19 +146,19 @@ class Addorder extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             GetX<Ordercontroller>(builder: (c) {
               return Text("Total : ${c.totalprice}");
             }),
-            SizedBox(
+            const SizedBox(
               height: 50,
             ),
             Flexible(
                 flex: 3,
                 child: GetX<Ordercontroller>(builder: (c) {
-                  if (c.listoforders.length > 0) {
+                  if (c.listoforders.isNotEmpty) {
                     return ListView.separated(
                         itemBuilder: (context, idx) {
                           return Padding(
@@ -164,8 +171,9 @@ class Addorder extends StatelessWidget {
                                     children: [
                                       SlidableAction(
                                         onPressed: (ctx) {
-                                          c.removeorderitem(c.listoforders[idx],
-                                              );
+                                          c.removeorderitem(
+                                            c.listoforders[idx],
+                                          );
                                         },
                                         icon: Icons.delete,
                                         backgroundColor: Colors.grey.shade500,
@@ -185,7 +193,7 @@ class Addorder extends StatelessWidget {
                                       children: [
                                         Text(
                                           c.listoforders[idx].name!,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                               fontFamily: 'PatrickHand',
                                               fontSize: 18,
                                               fontWeight: FontWeight.w400,
@@ -194,7 +202,7 @@ class Addorder extends StatelessWidget {
                                           softWrap: true,
                                         ),
                                         Text("${c.listoforders[idx].price} DA",
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                                 fontFamily: 'PatrickHand',
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.w400,
@@ -203,7 +211,7 @@ class Addorder extends StatelessWidget {
                                             softWrap: true),
                                         Text(
                                             "quantity : ${c.listoforders[idx].quantity}",
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                                 fontFamily: 'PatrickHand',
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.w400,
@@ -212,7 +220,7 @@ class Addorder extends StatelessWidget {
                                             softWrap: true),
                                         Text(
                                             "created At : ${DateFormat.yMd().add_Hm().format(c.listoforders[idx].createdAt!)}",
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.w400,
                                                 color: Colors.white,
@@ -227,16 +235,17 @@ class Addorder extends StatelessWidget {
                           );
                         },
                         separatorBuilder: (context, idx) {
-                          return SizedBox(
+                          return const SizedBox(
                             height: 5,
                           );
                         },
                         itemCount: c.listoforders.length);
-                  } else
-                    return Container(
+                  } else {
+                    return const SizedBox(
                       height: double.infinity,
                       child: Text('No items'),
                     );
+                  }
                 }))
           ],
         ),

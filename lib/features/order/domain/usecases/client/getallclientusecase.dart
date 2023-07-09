@@ -13,7 +13,7 @@ import '../../repositories/clientrepository.dart';
 
 class GetAllClientUseCase implements UseCase<Future<List<ClientEntity>>, NoParams> {
   GetAllClientUseCase(this._clientRepository);
-  ClientRepository _clientRepository;
+  final ClientRepository _clientRepository;
 
   @override
   Future<List<ClientEntity>> call(NoParams noParams) async {

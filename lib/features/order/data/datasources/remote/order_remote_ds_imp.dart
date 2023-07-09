@@ -9,7 +9,7 @@ import '../source/order_remote_ds.dart';
 class OrderRemoteDataSourceImp implements OrderRemoteDataSource {
   OrderRemoteDataSourceImp(this._apiConsumer);
 
-  ApiConsumer _apiConsumer;
+  final ApiConsumer _apiConsumer;
 
   @override
   Future<String> addOrder(OrderEntity order) async {
@@ -30,16 +30,16 @@ class OrderRemoteDataSourceImp implements OrderRemoteDataSource {
     final data =
         await _apiConsumer.get(endpoint: EndPoints.orders) as List<dynamic>;
     final List<OrderModel> ordersList = [];
-    data.forEach((element) {
+    for (var element in data) {
       ordersList.add(OrderModel.frommap(element));
-    });
+    }
     return ordersList;
   }
 
   @override
   Future<OrderModel> getOrder(String orderId) async {
     final data =
-        await _apiConsumer.get(endpoint: EndPoints.orders + "/" + orderId);
+        await _apiConsumer.get(endpoint: "${EndPoints.orders}/$orderId");
     return OrderModel.frommap(data);
   }
 
@@ -49,21 +49,21 @@ class OrderRemoteDataSourceImp implements OrderRemoteDataSource {
         endpoint: EndPoints.orders,
         queryParameters: {OrderKeys.clientId: clientId}) as List<dynamic>;
     final List<OrderModel> listOfOrders = [];
-    data.forEach((element) {
+    for (var element in data) {
       listOfOrders.add(OrderModel.frommap(element));
-    });
+    }
     return listOfOrders;
   }
 
   @override
   Future<void> removeOrder(String orderId) async {
    
-        await _apiConsumer.delete(endpoint: EndPoints.orders + "/" + orderId);
+        await _apiConsumer.delete(endpoint: "${EndPoints.orders}/$orderId");
   }
 
   @override
   Future<void> updateOrder(OrderEntity order) async {
-           await _apiConsumer.patch(endpoint: EndPoints.orders + "/" + order.id!,data: order.toOrderModel().toMap());
+           await _apiConsumer.patch(endpoint: "${EndPoints.orders}/${order.id!}",data: order.toOrderModel().toMap());
 
   }
 }

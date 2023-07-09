@@ -20,6 +20,6 @@ class Barcode {
 
   static const _kFontFam = 'Barcode';
   static const String? _kFontPkg = null;
-  static const IconData barcode_scan =
+  static const IconData barcodeScan =
       IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }

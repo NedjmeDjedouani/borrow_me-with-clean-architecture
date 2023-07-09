@@ -8,7 +8,7 @@ import 'package:test_app/core/utils/extansions/productentitymapperextension.dart
 class ProductRemoteDataSourceImp implements ProductRemoteDataSource {
   ProductRemoteDataSourceImp(this._apiConsumer);
 
-  ApiConsumer _apiConsumer;
+  final ApiConsumer _apiConsumer;
 
   @override
   Future<String> addProduct(ProductEntity productEntity) async {
@@ -22,9 +22,9 @@ class ProductRemoteDataSourceImp implements ProductRemoteDataSource {
     final data =
         await _apiConsumer.get(endpoint: EndPoints.products) as List<dynamic>;
     final List<ProductModel> productModelList = [];
-    data.forEach((element) {
+    for (var element in data) {
       productModelList.add(ProductModel.fromMap(element));
-    });
+    }
     return productModelList;
   }
 
@@ -36,13 +36,13 @@ class ProductRemoteDataSourceImp implements ProductRemoteDataSource {
 
   @override
   Future<void> removeProduct(String productId) async {
-    await _apiConsumer.delete(endpoint: EndPoints.products + "/" + productId);
+    await _apiConsumer.delete(endpoint: "${EndPoints.products}/$productId");
   }
 
   @override
   Future<void> updateProduct(ProductEntity productEntity) async {
     await _apiConsumer.patch(
-        endpoint: EndPoints.products + "/" + productEntity.id!,
+        endpoint: "${EndPoints.products}/${productEntity.id!}",
         data: productEntity.toProductModel().toMap());
   }
 }

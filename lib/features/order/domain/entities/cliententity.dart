@@ -9,7 +9,7 @@ class ClientEntity extends Equatable {
   final String? phonenumber;
   final DateTime? createdAt;
 
-  ClientEntity(
+  const ClientEntity(
       {this.balance,
       this.createdAt,
       this.firstname,
@@ -19,12 +19,12 @@ class ClientEntity extends Equatable {
 
   @override
   List<Object?> get props => [
-        this.balance,
-        this.createdAt,
-        this.firstname,
-        this.lastname,
-        this.id,
-        this.phonenumber
+        balance,
+        createdAt,
+        firstname,
+        lastname,
+        id,
+        phonenumber
       ];
 
   ClientEntity copyWith({

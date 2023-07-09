@@ -1,5 +1,5 @@
 class EndPoints {
-  static final products = "products";
-  static final clients = "clients";
-  static final orders = "orders";
+  static const products = "products";
+  static const clients = "clients";
+  static const orders = "orders";
 }

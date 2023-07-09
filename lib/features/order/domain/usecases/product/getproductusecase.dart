@@ -5,7 +5,7 @@ import '../../repositories/productrepository.dart';
 class GetProductUseCase
     implements UseCase<Future<ProductEntity>, String> {
   GetProductUseCase(this._productRepository);
-  ProductRepository _productRepository;
+  final ProductRepository _productRepository;
   @override
   Future<ProductEntity> call(String productId) async {
     return await _productRepository.getProduct(productId);

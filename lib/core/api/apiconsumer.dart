@@ -15,15 +15,15 @@ abstract class ApiConsumer {
       Map<String, dynamic>? headers});
   Future<dynamic> post(
       {required String endpoint,
-     required Map<String, dynamic> data,
+      required Map<String, dynamic> data,
       Map<String, dynamic>? queryParameters,
       Map<String, dynamic>? headers});
-  Future<dynamic> patch(
+  Future<void> patch(
       {required String endpoint,
-     required Map<String, dynamic> data,
+      required Map<String, dynamic> data,
       Map<String, dynamic>? queryParameters,
       Map<String, dynamic>? headers});
-  Future<dynamic> delete(
+  Future<void> delete(
       {required String endpoint,
       Map<String, dynamic>? data,
       Map<String, dynamic>? queryParameters,
@@ -32,16 +32,16 @@ abstract class ApiConsumer {
 
 Map<String, dynamic> buildHeaders(Map<String, dynamic>? headers) {
   if (headers == null) {
-    return {CONTENTTYPE: APPLICATIONJSON};
-  } else if (headers.containsKey(CONTENTTYPE))
+    return {contentType: applicationJSON};
+  } else if (headers.containsKey(contentType)) {
     return headers;
-  else {
-    return {...headers, CONTENTTYPE: APPLICATIONJSON};
+  } else {
+    return {...headers, contentType: applicationJSON};
   }
 }
 
 String buildUrlPath(String endpoint) {
-  return p.join(BASEURL, endpoint);
+  return p.join(baseurl, endpoint);
 }
 
 ServerFailure getErrorfromStatusCode(int statusCode) {
@@ -75,8 +75,9 @@ class DioConsumer implements ApiConsumer {
     final response = await dioClient.get(buildUrlPath(endpoint),
         queryParameters: queryParameters,
         options: Options(headers: requestHeaders));
+    logger.i(response);
     if (response.statusCode == StatusCode.ok) {
-      final data = jsonDecode(response.data);
+      final data = response.data["data"];
       return data;
     } else {
       throw getErrorfromStatusCode(response.statusCode!);
@@ -84,9 +85,9 @@ class DioConsumer implements ApiConsumer {
   }
 
   @override
-  Future<dynamic> patch(
+  Future<void> patch(
       {required String endpoint,
-      required Map<String, dynamic> data, 
+      required Map<String, dynamic> data,
       Map<String, dynamic>? queryParameters,
       Map<String, dynamic>? headers}) async {
     final requestHeaders = buildHeaders(headers);
@@ -95,10 +96,8 @@ class DioConsumer implements ApiConsumer {
           data: data,
           queryParameters: queryParameters,
           options: Options(headers: requestHeaders));
-      if (response.statusCode == StatusCode.ok) {
-        final data = jsonDecode(response.data);
-        return data;
-      } else {
+      logger.i(response.statusCode);
+      if (response.statusCode != StatusCode.ok) {
         throw getErrorfromStatusCode(response.statusCode!);
       }
     } catch (e) {
@@ -106,7 +105,7 @@ class DioConsumer implements ApiConsumer {
         rethrow;
       } else {
         logger.e(e);
-        throw ServerFailure("something went wrong", 500);
+        throw const ServerFailure("something went wrong", 500);
       }
     }
   }
@@ -124,8 +123,9 @@ class DioConsumer implements ApiConsumer {
           data: formDataIsEnabled ? FormData.fromMap(data) : data,
           queryParameters: queryParameters,
           options: Options(headers: requestHeaders));
+      logger.i(response);
       if (response.statusCode == StatusCode.ok) {
-        final data = jsonDecode(response.data);
+        final data = jsonDecode(response.data['data']);
         return data;
       } else {
         throw getErrorfromStatusCode(response.statusCode!);
@@ -135,13 +135,13 @@ class DioConsumer implements ApiConsumer {
         rethrow;
       } else {
         logger.e(e);
-        throw ServerFailure("something went wrong", 500);
+        throw const ServerFailure("something went wrong", 500);
       }
     }
   }
 
   @override
-  Future<dynamic> delete(
+  Future<void> delete(
       {required String endpoint,
       Map<String, dynamic>? data,
       Map<String, dynamic>? queryParameters,
@@ -152,10 +152,7 @@ class DioConsumer implements ApiConsumer {
           data: data,
           queryParameters: queryParameters,
           options: Options(headers: requestHeaders));
-      if (response.statusCode == StatusCode.ok) {
-        final data = jsonDecode(response.data);
-        return data;
-      } else {
+      if (response.statusCode != StatusCode.ok) {
         throw getErrorfromStatusCode(response.statusCode!);
       }
     } catch (e) {
@@ -163,7 +160,7 @@ class DioConsumer implements ApiConsumer {
         rethrow;
       } else {
         logger.e(e);
-        throw ServerFailure("something went wrong", 500);
+        throw const ServerFailure("something went wrong", 500);
       }
     }
   }

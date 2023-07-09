@@ -1,16 +1,16 @@
 import 'package:test_app/features/order/domain/entities/cliententity.dart';
 
 class ClientKeys {
-  static final balance = "balance";
-  static final createdAt = "created_at";
-  static final lastName = "last_name";
-  static final id = "id";
-  static final phoneNumber = "phone_number";
-  static final firstName = "first_name";
+  static const balance = "balance";
+  static const createdAt = "created_at";
+  static const lastName = "last_name";
+  static const id = "id";
+  static const phoneNumber = "phone_number";
+  static const firstName = "first_name";
 }
 
 class ClientModel extends ClientEntity {
-  ClientModel(
+  const ClientModel(
       {String? firstname,
       String? id,
       String? lastname,
@@ -18,6 +18,7 @@ class ClientModel extends ClientEntity {
       double? balance,
       DateTime? createdAt})
       : super(
+            phonenumber: phonenumber,
             balance: balance,
             createdAt: createdAt,
             firstname: firstname,
@@ -26,20 +27,20 @@ class ClientModel extends ClientEntity {
 
   factory ClientModel.frommap(Map<String, dynamic> map) {
     return ClientModel(
-        balance: map[ClientKeys.balance],
-        createdAt: DateTime.fromMillisecondsSinceEpoch(map[ClientKeys.createdAt]),
+        balance: double.parse(map[ClientKeys.balance].toString()),
+        createdAt: DateTime.parse(map[ClientKeys.createdAt]),
         firstname: map[ClientKeys.firstName],
         lastname: map[ClientKeys.lastName],
-        id: map[ClientKeys.id],
+        id: map[ClientKeys.id].toString(),
         phonenumber: map[ClientKeys.phoneNumber]);
   }
 
   Map<String, dynamic> toMap() => {
-        ClientKeys.id: this.id,
-        ClientKeys.balance: this.balance,
-        ClientKeys.firstName: this.firstname,
-        ClientKeys.lastName: this.lastname,
-        ClientKeys.phoneNumber: this.phonenumber,
-        ClientKeys.createdAt: this.createdAt?.millisecondsSinceEpoch,
+        ClientKeys.id: id,
+        ClientKeys.balance: balance,
+        ClientKeys.firstName: firstname,
+        ClientKeys.lastName: lastname,
+        ClientKeys.phoneNumber: phonenumber,
+        ClientKeys.createdAt: createdAt?.millisecondsSinceEpoch,
       };
 }

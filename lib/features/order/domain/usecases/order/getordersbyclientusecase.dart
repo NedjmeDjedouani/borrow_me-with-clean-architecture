@@ -5,8 +5,9 @@ import 'package:test_app/features/order/domain/repositories/orderrepository.dart
 class GetOrdersByClientUseCase
     implements UseCase<Future<List<OrderEntity>>, String> {
   GetOrdersByClientUseCase(this._orderRepository);
-  OrderRepository _orderRepository;
+  final OrderRepository _orderRepository;
 
+  @override
   Future<List<OrderEntity>> call(String clientId) async {
   return  await _orderRepository.getOrdersByClient(clientId);
   }

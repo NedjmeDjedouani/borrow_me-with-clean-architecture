@@ -4,10 +4,10 @@ import 'package:test_app/features/order/domain/entities/productentity.dart';
 extension ProductModelMapper on ProductEntity {
   ProductModel toProductModel() {
     return ProductModel(
-        barcode: this.barcode,
-        createdAt: this.createdAt,
-        id: this.id,
-        name: this.productname,
-        price: this.price);
+        barcode: barcode,
+        createdAt: createdAt,
+        id: id,
+        name: productname,
+        price: price);
   }
 }

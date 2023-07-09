@@ -1,16 +1,16 @@
 import 'package:test_app/features/order/domain/entities/orderentity.dart';
 
 class OrderKeys {
-  static final createdAt = "createdAt";
-  static final name = "name";
-  static final price = "price";
-  static final quantity = "quantity";
-  static final id = "id";
-  static final clientId = "clientId";
+  static const createdAt = "createdAt";
+  static const name = "name";
+  static const price = "price";
+  static const quantity = "quantity";
+  static const id = "id";
+  static const clientId = "clientId";
 }
 
 class OrderModel extends OrderEntity {
-  OrderModel(
+  const OrderModel(
       {String? clientId,
       DateTime? createdAt,
       String? name,
@@ -28,18 +28,18 @@ class OrderModel extends OrderEntity {
   factory OrderModel.frommap(Map<String, dynamic> map) {
     return OrderModel(
         name: map[OrderKeys.name],
-        price: map[OrderKeys.price],
+        price: double.parse(map[OrderKeys.price].toString()) ,
         quantity: map[OrderKeys.quantity],
         clientId: map[OrderKeys.clientId],
-        id: map[OrderKeys.id],
-        createdAt: DateTime.fromMillisecondsSinceEpoch(map[ OrderKeys.createdAt]));
+        id: map[OrderKeys.id].toString(),
+        createdAt: DateTime.parse(map[ OrderKeys.createdAt]));
   }
   Map<String, dynamic> toMap() => {
-        OrderKeys.id: this.id,
-        OrderKeys.name: this.name,
-        OrderKeys.price: this.price,
-        OrderKeys.quantity: this.quantity,
-        OrderKeys.clientId: this.clientId,
-        OrderKeys.createdAt: this.createdAt?.millisecondsSinceEpoch,
+        OrderKeys.id: id,
+        OrderKeys.name: name,
+        OrderKeys.price: price,
+        OrderKeys.quantity: quantity,
+        OrderKeys.clientId: clientId,
+        OrderKeys.createdAt: createdAt?.millisecondsSinceEpoch,
       };
 }

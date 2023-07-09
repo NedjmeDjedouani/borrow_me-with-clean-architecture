@@ -4,7 +4,7 @@ import 'package:test_app/features/order/domain/repositories/productrepository.da
 
 class AddProductUseCase implements UseCase<Future<void>, ProductEntity> {
   AddProductUseCase(this._productRepository);
-  ProductRepository _productRepository;
+  final ProductRepository _productRepository;
 
   @override
   Future<void> call(ProductEntity productEntity) async {

@@ -10,106 +10,118 @@ import 'core/utils/constants.dart';
 class Products extends StatelessWidget {
   final ProductsController controller = Get.put(ProductsController());
 
+  Products({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Container(
           width: double.infinity,
-          padding: EdgeInsets.all(padding),
+          padding: const EdgeInsets.all(padding),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Container(
-                child: IconButton(
-                    onPressed: () {
-                      Get.to(() => Addproduct());
-                    },
-                    icon: Icon(Icons.add_circle_rounded),
-                    iconSize: 80,
-                    color:AppColors.primary),
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(shape: const CircleBorder()),
+                  onPressed: () {
+                    Get.to(() => const Addproduct());
+                  },
+                  child: const Icon(Icons.add, size: 40)),
+              const SizedBox(
+                height: sizedboxheight * 2,
               ),
-              SizedBox(height: sizedboxheight,),
-              Flexible(child: GetX<ProductsController>(builder: (controller) {
-                if (controller.listofproducts.length == 0) {
-                  return Center(child: Text(AppStrings.noItems));
-                } else
-                  return ListView.separated(
-                      itemBuilder: (context, idx) {
-                        return ClipRRect(
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(borderradius),
-                              bottomRight: Radius.circular(borderradius)),
-                          child: Slidable(
-                              child: Container(
-                                color: AppColors.slidableBackground,
-                                padding: EdgeInsets.symmetric(vertical: padding),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      flex: 3,
-                                      child: Text(
-                                          controller.listofproducts
-                                              .elementAt(idx)
-                                              .productname!,
-                                          softWrap: true,
-                                          textAlign: TextAlign.center,
-                                          style: context.textTheme.bodyMedium),
+              FutureBuilder(
+                  future: controller.getallproducts(),
+                  builder: (ctx, snapshot) {
+                    return Flexible(
+                        child: GetX<ProductsController>(builder: (controller) {
+                      if (controller.listofproducts.isEmpty) {
+                        return const Center(child: Text(AppStrings.noItems));
+                      } else {
+                        return ListView.separated(
+                            itemBuilder: (context, idx) {
+                              return ClipRRect(
+                                borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(borderradius),
+                                    bottomRight: Radius.circular(borderradius)),
+                                child: Slidable(
+                                    startActionPane: ActionPane(
+                                      motion: const ScrollMotion(),
+                                      children: [
+                                        SlidableAction(
+                                          backgroundColor:
+                                              AppColors.slidableBackground,
+                                          icon: Icons.edit,
+                                          onPressed: (ctx) {
+                                            Get.to(() => const Addproduct(),
+                                                arguments: controller
+                                                    .listofproducts[idx]);
+                                          },
+                                        )
+                                      ],
                                     ),
-                                    Expanded(
-                                      flex: 2,
-                                      child: Text(
-                                        AppStrings.price +
-                                            ": ${controller.listofproducts[idx].price!.toStringAsFixed(0)} " +
-                                            AppStrings.dzdCurrency,
-                                        softWrap: true,
-                                        style: context.textTheme.bodyMedium,
+                                    endActionPane: ActionPane(
+                                      motion: const ScrollMotion(),
+                                      children: [
+                                        SlidableAction(
+                                          backgroundColor:
+                                              AppColors.slidableBackground,
+                                          icon: Icons.delete,
+                                          onPressed: (ctx) {
+                                            controller.removeproduct(
+                                                controller.listofproducts[idx]);
+                                          },
+                                        )
+                                      ],
+                                    ),
+                                    child: Container(
+                                      color: AppColors.primary,
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: padding),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                            flex: 3,
+                                            child: Text(
+                                                controller.listofproducts
+                                                    .elementAt(idx)
+                                                    .productname!,
+                                                softWrap: true,
+                                                textAlign: TextAlign.center,
+                                                style: context
+                                                    .textTheme.headlineMedium
+                                                    ?.copyWith(
+                                                        color: Colors.white)),
+                                          ),
+                                          Expanded(
+                                            flex: 2,
+                                            child: Text(
+                                              "${controller.listofproducts[idx].price!.toStringAsFixed(0)} ${AppStrings.dzdCurrency}",
+                                              softWrap: true,
+                                              style: context
+                                                  .textTheme.headlineMedium
+                                                  ?.copyWith(
+                                                      color: Colors.white),
+                                            ),
+                                          )
+                                        ],
                                       ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              startActionPane: ActionPane(
-                                motion: ScrollMotion(),
-                                children: [
-                                  SlidableAction(
-                                    backgroundColor:
-                                        AppColors.slidableBackground,
-                                    icon: Icons.edit,
-                                    onPressed: (ctx) {
-                                      Get.to(() => Addproduct(),
-                                          arguments:
-                                              controller.listofproducts[idx]);
-                                    },
-                                  )
-                                ],
-                              ),
-                              endActionPane: ActionPane(
-                                motion: ScrollMotion(),
-                                children: [
-                                  SlidableAction(
-                                    backgroundColor:
-                                        AppColors.slidableBackground,
-                                    icon: Icons.delete,
-                                    onPressed: (ctx) {
-                                      controller.removeproduct(
-                                          controller.listofproducts[idx]);
-                                    },
-                                  )
-                                ],
-                              )),
-                        );
-                      },
-                      physics: BouncingScrollPhysics(),
-                      separatorBuilder: (context, int) {
-                        return SizedBox(
-                          height: sizedboxheight,
-                        );
-                      },
-                      itemCount: controller.listofproducts.length);
-              })),
+                                    )),
+                              );
+                            },
+                            physics: const BouncingScrollPhysics(),
+                            separatorBuilder: (context, _) {
+                              return const SizedBox(
+                                height: sizedboxheight,
+                              );
+                            },
+                            itemCount: controller.listofproducts.length);
+                      }
+                    }));
+                  }),
             ],
           ),
         ),

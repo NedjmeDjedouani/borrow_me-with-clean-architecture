@@ -3,50 +3,56 @@ import 'package:get/get.dart';
 import 'package:test_app/barcode_icons.dart';
 import 'package:test_app/controllers/productvalidationform.dart';
 import 'package:test_app/core/utils/app_strings.dart';
-
-
+import 'package:test_app/core/utils/constants.dart';
 
 class Addproduct extends StatefulWidget {
+  const Addproduct({super.key});
+
   @override
-  _AddproductState createState() => _AddproductState();
+  AddproductState createState() => AddproductState();
 }
 
-class _AddproductState extends State<Addproduct> with TickerProviderStateMixin {
+class AddproductState extends State<Addproduct> with TickerProviderStateMixin {
   final ProductValidationForm c = Get.put(ProductValidationForm());
-  late Animation<double> opacity,opacity2,opacity3;
+  late Animation<double> opacity, opacity2, opacity3;
   late AnimationController animationController;
 
-@override
-void initState() {
- 
-animationController=AnimationController(vsync: this,duration: Duration(seconds: 1));
- opacity=Tween<double>(begin: 0.0,end: 1.0)
-      .animate(CurvedAnimation(parent: animationController, curve:Interval(0, 0.33,curve: Curves.easeIn) ));
-opacity2=Tween<double>(begin: 0.0,end: 1.0)
-      .animate(CurvedAnimation(parent: animationController, curve:Interval(0.33,0.66,curve: Curves.bounceIn)));
-opacity3=Tween<double>(begin: 0.0,end: 1.0)
-      .animate(CurvedAnimation(parent: animationController, curve:Interval(0.66,1,curve: Curves.bounceOut) ));
-  animationController.forward();
+  @override
+  void initState() {
+    animationController =
+        AnimationController(vsync: this, duration: const Duration(seconds: 1));
+    opacity = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+        parent: animationController,
+        curve: const Interval(0, 0.33, curve: Curves.easeIn)));
+    opacity2 = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+        parent: animationController,
+        curve: const Interval(0.33, 0.66, curve: Curves.bounceIn)));
+    opacity3 = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+        parent: animationController,
+        curve: const Interval(0.66, 1, curve: Curves.bounceOut)));
+    animationController.forward();
     super.initState();
   }
+
+  @override
   void dispose() {
-  animationController.dispose();
+    animationController.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
-        title: Text('add product'),
+        title: const Text(AppStrings.addProduct),
         leading: IconButton(
             onPressed: () {
               Get.back();
             },
-            icon: Icon(Icons.arrow_back)),
+            icon: const Icon(Icons.arrow_back)),
       ),
       body: Container(
-        padding: EdgeInsets.all(30),
+        padding: const EdgeInsets.all(padding),
         child: Center(
             child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -55,9 +61,11 @@ opacity3=Tween<double>(begin: 0.0,end: 1.0)
               key: c.globalformkey,
               child: Column(
                 children: [
-                  FadeTransition(opacity:opacity ,
+                  FadeTransition(
+                    opacity: opacity,
                     child: TextFormField(
-                      decoration: InputDecoration(labelText: "Name"),
+                      decoration:
+                          const InputDecoration(labelText: AppStrings.name),
                       validator: ProductValidationForm.namevalidator,
                       onSaved: (value) {
                         c.inputproductname = value!;
@@ -65,11 +73,15 @@ opacity3=Tween<double>(begin: 0.0,end: 1.0)
                       controller: c.productnamecontroller,
                     ),
                   ),
+                  const SizedBox(
+                    height: sizedboxheight,
+                  ),
                   FadeTransition(
                     opacity: opacity2,
                     child: TextFormField(
                       keyboardType: TextInputType.number,
-                      decoration: InputDecoration(labelText: AppStrings.price),
+                      decoration:
+                          const InputDecoration(labelText: AppStrings.price),
                       validator: ProductValidationForm.pricevalidator,
                       onSaved: (value) {
                         c.inputproductprice = value!;
@@ -77,20 +89,22 @@ opacity3=Tween<double>(begin: 0.0,end: 1.0)
                       controller: c.pricecontroller,
                     ),
                   ),
+                  const SizedBox(
+                    height: sizedboxheight,
+                  ),
                   FadeTransition(
                     opacity: opacity3,
                     child: TextFormField(
                       keyboardType: TextInputType.number,
                       controller: c.barcodecontroller,
                       decoration: InputDecoration(
-                          labelText: "barcode",
+                          labelText: AppStrings.barcode,
                           suffixIcon: IconButton(
                               onPressed: () async {
-                              //  c.barcodecontroller.text =await c.pc.getbarcodewithcam();
+                                //  c.barcodecontroller.text =await c.pc.getbarcodewithcam();
                               },
-                              icon: Icon(
-                                Barcode.barcode_scan,
-                                color: Colors.grey[600],
+                              icon: const Icon(
+                                Barcode.barcodeScan,
                               ))),
                       validator: ProductValidationForm.barcodevalidator,
                       onSaved: (value) {
@@ -98,14 +112,14 @@ opacity3=Tween<double>(begin: 0.0,end: 1.0)
                       },
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10.0),
-                    child: ElevatedButton(
-                        onPressed: () {
-                          c.addOrUpdateProduct();
-                        },
-                        child: Text('submit')),
-                  )
+                  const SizedBox(
+                    height: sizedboxheight * 2  ,
+                  ),
+                  ElevatedButton(
+                      onPressed: () {
+                        c.addOrUpdateProduct();
+                      },
+                      child: const Text(AppStrings.submit))
                 ],
               ),
             )

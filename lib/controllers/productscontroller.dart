@@ -1,5 +1,6 @@
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:get/get.dart';
+import 'package:test_app/controllers/statecontroller.dart';
 import 'package:test_app/core/usecases/usecase.dart';
 import 'package:test_app/features/order/domain/entities/productentity.dart';
 import 'package:test_app/features/order/domain/usecases/product/addproductusecase.dart';
@@ -7,53 +8,34 @@ import 'package:test_app/features/order/domain/usecases/product/getallproductsus
 import 'package:test_app/features/order/domain/usecases/product/removeproductusecase.dart';
 import 'package:test_app/features/order/domain/usecases/product/searchproductusecase.dart';
 
-class ProductsController extends GetxController {
+class ProductsController extends StateController {
   List<ProductEntity> suggestions = [];
   RxList<ProductEntity> listofproducts = <ProductEntity>[].obs;
   Rx<bool> showsearchedproduct = false.obs;
   ProductEntity? searchedproduct;
-  RxBool isLoading = false.obs;
-  RxString error = "".obs;
-  GetAllProductsUseCase _getAllProductsUseCase = Get.find();
-  SearchProductUseCase _searchProductUseCase = Get.find();
-  AddProductUseCase _addProductUseCase = Get.find();
-  RemoveProductUseCase _removeProductUseCase = Get.find();
-
-  @override
-  onInit() {
-    getallproducts();
-    super.onInit();
-  }
+  final GetAllProductsUseCase _getAllProductsUseCase = Get.find();
+  final SearchProductUseCase _searchProductUseCase = Get.find();
+  final AddProductUseCase _addProductUseCase = Get.find();
+  final RemoveProductUseCase _removeProductUseCase = Get.find();
 
   Future<void> getallproducts() async {
-    try {
-      isLoading.value = true;
+    excute(() async {
       listofproducts.value = await _getAllProductsUseCase(NoParams());
-    } catch (e) {
-    } finally {
-      isLoading.value = false;
-    }
+    });
   }
 
   Future<void> addproduct(ProductEntity product) async {
-    try {
-      isLoading.value = true;
+    excute(() async {
       await _addProductUseCase(product);
       listofproducts.add(product);
-      isLoading.value = false;
-    } catch (e) {
-    } finally {}
+    });
   }
 
   Future<void> removeproduct(ProductEntity product) async {
-    try {
-      isLoading.value = true;
+    excute(() async {
       await _removeProductUseCase(product.id!);
       listofproducts.remove(product);
-    } catch (e) {
-    } finally {
-      isLoading.value = false;
-    }
+    });
   }
 
   Future<String> getbarcodewithcam() async {
@@ -63,34 +45,23 @@ class ProductsController extends GetxController {
   }
 
   Future<List<ProductEntity>> searchProduct(String v) async {
-    try {
-      isLoading.value = true;
-      suggestions.clear();
-      if (v.isNotEmpty) {
+    suggestions.clear();
+    if (v.isNotEmpty) {
+      return excute(() async {
         suggestions.addAll(await _searchProductUseCase(v));
         return suggestions;
-      }
-            return [];
-
-    } catch (e) {
-      
-      return [];
-    } finally {
-      isLoading.value = false;
+      }) as Future<List<ProductEntity>>;
     }
+    return [];
   }
 
   Future<void> editproduct(ProductEntity product) async {
-    try {
-      isLoading.value = true;
+    excute(() async {
       await editproduct(product);
       int idx =
           listofproducts.indexWhere((element) => element.id == product.id);
       listofproducts[idx] = product;
-    } catch (e) {
-    } finally {
-      isLoading.value = false;
-    }
+    });
   }
 
   bool isProductexist(String barcode) {

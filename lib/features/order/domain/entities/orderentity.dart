@@ -9,7 +9,7 @@ class OrderEntity extends Equatable {
   final int? _quantity;
   final DateTime? _createdAt;
 
-  OrderEntity(
+  const OrderEntity(
       {String? name,
       double? price,
       String? id,
@@ -34,12 +34,12 @@ class OrderEntity extends Equatable {
 
   @override
   List<Object?> get props =>  [
-        this._clientid,
-        this._createdAt,
-        this._id,
-        this._name,
-        this._price,
-        this._quantity,
+        _clientid,
+        _createdAt,
+        _id,
+        _name,
+        _price,
+        _quantity,
       ];
 
   OrderEntity copyWith({
@@ -51,12 +51,12 @@ class OrderEntity extends Equatable {
     DateTime? createdAt,
   }) {
     return OrderEntity(
-    name:   name ?? this._name,
-    price:   price ?? this._price,
-     id:  id ?? this._id,
-   clientId:    clientid ?? this._clientid,
-    quantity:   quantity ?? this._quantity,
-     createdAt:  createdAt ?? this._createdAt,
+    name:   name ?? _name,
+    price:   price ?? _price,
+     id:  id ?? _id,
+   clientId:    clientid ?? _clientid,
+    quantity:   quantity ?? _quantity,
+     createdAt:  createdAt ?? _createdAt,
     );
   }
 }

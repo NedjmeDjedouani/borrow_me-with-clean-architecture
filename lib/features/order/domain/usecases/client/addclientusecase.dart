@@ -6,7 +6,7 @@ import '../../../../../core/usecases/usecase.dart';
 class AddClientUseCase implements UseCase<Future<void>, ClientEntity> {
   AddClientUseCase(this._clientRepository);
 
-  ClientRepository _clientRepository;
+  final ClientRepository _clientRepository;
 
   @override
   Future<void> call(ClientEntity client) async {

@@ -1,9 +1,9 @@
-const USERNAME = "admin";
-const PASSWORD = "passwod";
-const CONTENTTYPE = "content-type";
-const APPLICATIONJSON = "application/json";
+const username = "admin";
+const password = "password";
+const contentType = "content-type";
+const applicationJSON = "application/json";
 const isDev = true;
-const BASEURL = isDev ? "" : "";
+const baseurl = isDev ? "http://10.0.2.2:80/api" : "";
 
 //UI
 const borderwidth = 2.0;

@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:test_app/controllers/productscontroller.dart';
+import 'package:test_app/controllers/statecontroller.dart';
 import 'package:test_app/features/order/domain/entities/productentity.dart';
 import 'package:test_app/features/order/domain/usecases/product/addproductusecase.dart';
 import 'package:test_app/features/order/domain/usecases/product/updateproductusecase.dart';
 
 import '../utils/utils.dart';
 
-class ProductValidationForm extends GetxController {
-  AddProductUseCase _addProductUseCase = Get.find();
-  UpdateProductUseCase _updateProductUseCase = Get.find();
-  ProductsController _productsController = Get.find();
-  RxBool isLoading = false.obs;
-  var error = "".obs;
+class ProductValidationForm extends StateController {
+  final AddProductUseCase _addProductUseCase = Get.find();
+  final UpdateProductUseCase _updateProductUseCase = Get.find();
+  final ProductsController _productsController = Get.find();
   @override
   onInit() {
     selectedproduct = Get.arguments;
@@ -38,8 +37,9 @@ class ProductValidationForm extends GetxController {
     if (name == null) return null;
     if (name.isNotEmpty) {
       return name.length > 40 ? 'more than 40 characters' : null;
-    } else
+    } else {
       return "this field is empty";
+    }
   }
 
   static String? barcodevalidator(String? name) {
@@ -60,8 +60,9 @@ class ProductValidationForm extends GetxController {
       return 'this field should be a number';
     } else if (price.length > 15) {
       return 'this number should not exceed 15 digits';
-    } else
+    } else {
       return null;
+    }
   }
 
   void clearinputcontrollers() {
@@ -76,50 +77,51 @@ class ProductValidationForm extends GetxController {
         barcode: inputproductbarcode,
         price: double.parse(inputproductprice),
         createdAt: DateTime.now());
-    await _addProductUseCase(p);
-    clearinputcontrollers();
-    Get.snackbar('Info:', 'item is registered',
-        colorText: Colors.white,
-        isDismissible: true,
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.black);
+
+    excute(() async {
+      await _addProductUseCase(p);
+      clearinputcontrollers();
+      Get.snackbar('Info:', 'item is registered',
+          colorText: Colors.white,
+          isDismissible: true,
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.black);
+    });
   }
 
   _updateProduct() async {
-    await _updateProductUseCase(ProductEntity(
-      id: selectedproduct!.id,
-      productname: inputproductname,
-      barcode: inputproductbarcode,
-      price: double.tryParse(inputproductprice)!,
-    ));
-
-    Get.back();
+    excute(() async {
+      await _updateProductUseCase(ProductEntity(
+        id: selectedproduct!.id,
+        productname: inputproductname,
+        barcode: inputproductbarcode,
+        price: double.tryParse(inputproductprice)!,
+      ));
+      Get.back();
+    });
   }
 
   addOrUpdateProduct() async {
-    try {
-      if (globalformkey.currentState!.validate()) {
-        globalformkey.currentState!.save();
-        if (selectedproduct == null) {
-          if (!_productsController.isProductexist(inputproductbarcode)) {
-            isLoading.value = true;
+    if (globalformkey.currentState!.validate()) {
+      globalformkey.currentState!.save();
+      if (selectedproduct == null) {
+        if (!_productsController.isProductexist(inputproductbarcode)) {
+          excute(() async {
             await _addProduct();
-          } else {
-            Get.snackbar('Info', 'item already exist',
-                colorText: Colors.red,
-                snackPosition: SnackPosition.BOTTOM,
-                borderWidth: 1,
-                borderColor: Colors.red,
-                backgroundColor: Colors.white38);
-          }
+          });
         } else {
-          isLoading.value = true;
-          await _updateProduct();
+          Get.snackbar('Info', 'item already exist',
+              colorText: Colors.red,
+              snackPosition: SnackPosition.BOTTOM,
+              borderWidth: 1,
+              borderColor: Colors.red,
+              backgroundColor: Colors.white38);
         }
+      } else {
+        excute(() async {
+          await _updateProduct();
+        });
       }
-    } catch (e) {
-    } finally {
-      isLoading.value = false;
     }
   }
 }

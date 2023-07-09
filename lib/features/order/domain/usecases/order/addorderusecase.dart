@@ -5,7 +5,7 @@ import '../../../../../core/usecases/usecase.dart';
 
 class AddOrderUseCase implements UseCase<Future<void>, OrderEntity> {
   AddOrderUseCase(this._orderRepository);
-  OrderRepository _orderRepository;
+  final OrderRepository _orderRepository;
 
   @override
   Future<void> call(OrderEntity order) async {

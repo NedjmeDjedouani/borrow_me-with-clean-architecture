@@ -5,7 +5,7 @@ import '../../repositories/productrepository.dart';
 class SearchProductUseCase
     implements UseCase<Future<List<ProductEntity>>, String> {
   SearchProductUseCase(this._productRepository);
-  ProductRepository _productRepository;
+  final ProductRepository _productRepository;
   @override
   Future<List<ProductEntity>> call(String name) async {
     return await _productRepository.searchProduct(name);

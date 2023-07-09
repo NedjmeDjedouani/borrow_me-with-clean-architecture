@@ -7,7 +7,7 @@ import '../source/order_local_ds.dart';
 class OrderLocalDataSourceImp implements OrderLocalDataSource {
   OrderLocalDataSourceImp(this.localDatabase);
   LocalDatabase localDatabase;
-  OrderEntityMapper _orderEntityMapper=OrderEntityMapper();
+  final OrderEntityMapper _orderEntityMapper=OrderEntityMapper();
   @override
   addOrder(OrderEntity order) async {
     final id = await localDatabase.into(localDatabase.orderLocalModel).insert(
@@ -39,7 +39,7 @@ class OrderLocalDataSourceImp implements OrderLocalDataSource {
   updateOrder(OrderEntity order) async {
     await (localDatabase.update(localDatabase.orderLocalModel)
           ..where((tbl) => tbl.remoteId.equals(order.id!)))
-        .write(OrderLocalModelCompanion());
+        .write(const OrderLocalModelCompanion());
   }
 
   @override
@@ -47,9 +47,9 @@ class OrderLocalDataSourceImp implements OrderLocalDataSource {
     final orders =
         await localDatabase.select(localDatabase.orderLocalModel).get();
     final List<OrderModel> ordersModelsList = [];
-    orders.forEach((element) {
+    for (var element in orders) {
       ordersModelsList.add(_orderEntityMapper.cachedToMap(element));
-    });
+    }
     return ordersModelsList;
   }
 
@@ -66,9 +66,9 @@ class OrderLocalDataSourceImp implements OrderLocalDataSource {
           ..where((tbl) => tbl.clientId.equals(int.parse(clientId))))
         .get();
     final List<OrderModel> ordersModelsList = [];
-    orders.forEach((element) {
+    for (var element in orders) {
       ordersModelsList.add(_orderEntityMapper.cachedToMap(element));
-    });
+    }
     return ordersModelsList;
   }
 }

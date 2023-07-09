@@ -8,19 +8,19 @@ import '../source/client_local_datasource.dart';
 class ClientLocalDatatSourceImp implements ClientLocalDataSource {
   ClientLocalDatatSourceImp(this.localDatabase);
   LocalDatabase localDatabase ;
-  ClientEntityMapper _clientEntityMapper=ClientEntityMapper();
+  final ClientEntityMapper _clientEntityMapper=ClientEntityMapper();
   @override
   addClient(ClientEntity client) async {
     final id = await localDatabase.into(localDatabase.clientLocalModel).insert(
         ClientLocalModelCompanion.insert(remoteId: client.id!,
             phoneNumber: client.phonenumber == null
-                ? Value.absent()
+                ? const Value.absent()
                 : Value(client.phonenumber),
             createdAt: client.createdAt == null
-                ? Value.absent()
+                ? const Value.absent()
                 : Value(client.createdAt),
             lastName: client.lastname == null
-                ? Value.absent()
+                ? const Value.absent()
                 : Value(client.lastname),
             firstName: client.firstname!,
             balance: client.balance!));
@@ -32,9 +32,9 @@ class ClientLocalDatatSourceImp implements ClientLocalDataSource {
     final listofClients =
         await localDatabase.select(localDatabase.clientLocalModel).get();
     List<ClientModel> listofClientsModels = [];
-    listofClients.forEach((element) {
+    for (var element in listofClients) {
       listofClientsModels.add(_clientEntityMapper.cachedToMap(element));
-    });
+    }
     return listofClientsModels;
   }
 
@@ -66,16 +66,16 @@ class ClientLocalDatatSourceImp implements ClientLocalDataSource {
           ))
         .write(ClientLocalModelCompanion(
             balance: client.balance == null
-                ? Value.absent()
+                ? const Value.absent()
                 : Value(client.balance!),
             firstName: client.firstname == null
-                ? Value.absent()
+                ? const Value.absent()
                 : Value(client.firstname!),
             lastName: client.lastname == null
-                ? Value.absent()
+                ? const Value.absent()
                 : Value(client.lastname),
             phoneNumber: client.phonenumber == null
-                ? Value.absent()
+                ? const Value.absent()
                 : Value(client.phonenumber)));
   }
 }

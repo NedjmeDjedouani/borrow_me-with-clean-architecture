@@ -6,14 +6,19 @@ import 'package:test_app/features/order/domain/usecases/client/getallclientuseca
 import 'package:test_app/features/order/domain/usecases/client/removeclientusecase.dart';
 import 'package:test_app/features/order/domain/usecases/client/updateclientusecase.dart';
 
-class Clientscontroller extends GetxController {
-  AddClientUseCase _addClientUseCase = Get.find<AddClientUseCase>();
-  GetAllClientUseCase _getAllClientUseCase = Get.find<GetAllClientUseCase>();
-  UpdateClientUseCase _updateClientUseCase = Get.find<UpdateClientUseCase>();
-  RemoveClientUseCase _removeClientUseCase = Get.find<RemoveClientUseCase>();
+import 'statecontroller.dart';
+
+class Clientscontroller extends StateController {
+  final AddClientUseCase _addClientUseCase = Get.find<AddClientUseCase>();
+  final GetAllClientUseCase _getAllClientUseCase =
+      Get.find<GetAllClientUseCase>();
+  final UpdateClientUseCase _updateClientUseCase =
+      Get.find<UpdateClientUseCase>();
+  final RemoveClientUseCase _removeClientUseCase =
+      Get.find<RemoveClientUseCase>();
   var listofclients = <ClientEntity>[].obs;
-  var isLoading = false.obs;
-  var error = "".obs;
+
+  @override
   onInit() {
     getallclients();
 
@@ -21,33 +26,32 @@ class Clientscontroller extends GetxController {
   }
 
   void getallclients() async {
-    isLoading.value = true;
-    try {
-      await _getAllClientUseCase(NoParams());
-    } catch (e) {
-    } finally {
-      isLoading.value = false;
-    }
+    listofclients.clear();
+
+    excute(() async {
+      listofclients.addAll(await _getAllClientUseCase(NoParams()));
+    });
   }
 
   void addclient(ClientEntity client) async {
-    await _addClientUseCase(client);
-    listofclients.add(client);
+    excute(() async {
+      await _addClientUseCase(client);
+      listofclients.add(client);
+    });
   }
 
   void removeclient(ClientEntity client) async {
-    await _removeClientUseCase(client.id!);
+    excute(() async {
+      await _removeClientUseCase(client.id!);
+      listofclients.remove(client);
+    });
   }
 
   void editclient(ClientEntity client) async {
-    try {
-      isLoading.value = true;
+    excute(() async {
       await _updateClientUseCase(client);
       int idx = listofclients.indexWhere((element) => element.id == client.id);
       listofclients[idx] = client;
-    } catch (e) {
-    } finally {
-      isLoading.value = false;
-    }
+    });
   }
 }
