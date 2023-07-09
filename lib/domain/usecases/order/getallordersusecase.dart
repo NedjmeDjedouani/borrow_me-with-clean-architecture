@@ -1,8 +1,6 @@
 import 'package:test_app/core/usecases/usecase.dart';
-
-import '../../../../../domain/entities/orderentity.dart';
-import '../../../../../domain/repositories/orderrepository.dart';
-
+import '../../entities/orderentity.dart';
+import '../../repositories/orderrepository.dart';
 
 class GetAllOrdersUseCase
     implements UseCase<Future<List<OrderEntity>>, NoParams> {

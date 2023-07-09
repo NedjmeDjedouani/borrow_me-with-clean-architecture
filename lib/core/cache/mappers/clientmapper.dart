@@ -1,7 +1,8 @@
 import 'package:test_app/core/cache/db.dart';
 import 'package:test_app/core/cache/entitymapper.dart';
 
-import '../../../features/order/data/models/client.dart';
+import '../../../data/models/client.dart';
+
 class ClientEntityMapper implements EntityMapper<ClientModel,Client> {
   @override
   Client mapToCached(ClientModel clientModel) {

@@ -1,6 +1,6 @@
 import 'package:test_app/core/cache/db.dart';
 import 'package:test_app/core/cache/entitymapper.dart';
-import '../../../features/order/data/models/order.dart';
+import '../../../data/models/order.dart';
 
 
 class OrderEntityMapper implements EntityMapper<OrderModel,Order> {

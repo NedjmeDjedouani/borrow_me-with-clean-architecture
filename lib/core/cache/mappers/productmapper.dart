@@ -1,6 +1,7 @@
 import 'package:test_app/core/cache/db.dart';
 import 'package:test_app/core/cache/entitymapper.dart';
-import 'package:test_app/features/order/data/models/product.dart';
+
+import '../../../data/models/product.dart';
 
 class ProductEntityMapper implements EntityMapper<ProductModel,Product> {
   

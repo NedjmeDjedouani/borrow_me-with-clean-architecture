@@ -1,5 +1,7 @@
-import 'package:test_app/features/order/data/models/product.dart';
-import 'package:test_app/features/order/domain/entities/productentity.dart';
+
+
+import '../../../data/models/product.dart';
+import '../../../domain/entities/productentity.dart';
 
 extension ProductModelMapper on ProductEntity {
   ProductModel toProductModel() {
