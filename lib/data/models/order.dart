@@ -41,6 +41,6 @@ class OrderModel extends OrderEntity {
         OrderKeys.price: price,
         OrderKeys.quantity: quantity,
         OrderKeys.clientId: clientId,
-        OrderKeys.createdAt: createdAt?.millisecondsSinceEpoch,
+        OrderKeys.createdAt: createdAt,
       };
 }

@@ -42,6 +42,6 @@ class ClientModel extends ClientEntity {
         ClientKeys.firstName: firstname,
         ClientKeys.lastName: lastname,
         ClientKeys.phoneNumber: phonenumber,
-        ClientKeys.createdAt: createdAt?.millisecondsSinceEpoch,
+        ClientKeys.createdAt: createdAt,
       };
 }

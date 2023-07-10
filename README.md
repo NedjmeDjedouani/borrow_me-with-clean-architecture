@@ -1,16 +1,21 @@
-# test_app
 
-A new Flutter application.
+# Borrow Me -Clean Architecture
+a minimalized application for registering borrowed products for a small buisness with   **Flutter**  and **Laravel**
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+## Goals
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+- Keeping code clean
+- Keeping code testable
+- Keeping code base easily extensible and adaptable
+- making it easy to explore and replace different services/databases
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+## Technologies
+
+- Flutter 
+- state management: GETX
+- database : SQL with Drift ORM
+## Additioanal Info
+you can find the backend code with laravel [here](https://github.com/NedjmeDjedouani/borrowme_backend)

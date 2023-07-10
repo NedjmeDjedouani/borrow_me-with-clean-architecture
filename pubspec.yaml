@@ -27,6 +27,7 @@ dependencies:
   dio: ^5.2.1+1
   retrofit: ^4.0.1
   logger: ^1.4.0
+  faker: ^2.1.0
 
 dev_dependencies:
   flutter_test:
@@ -37,6 +38,7 @@ dev_dependencies:
   drift_dev: ^2.9.0
   json_serializable: ^6.7.0
   flutter_lints: ^2.0.2
+  mockito: ^5.4.2
 
 flutter_native_splash:
   background_image: "assets/splash.png"

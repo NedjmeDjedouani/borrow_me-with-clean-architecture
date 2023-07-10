@@ -56,7 +56,7 @@ class AppBindings implements Bindings {
     Get.put<ProductLocalDataSource>(
         ProductLocalDataSourceImp(Get.find<LocalDatabase>()));
     Get.put<ClientLocalDataSource>(
-        ClientLocalDatatSourceImp(Get.find<LocalDatabase>()));
+        ClientLocalDatatSourceImp(Get.find<ClientCache>()));
 
     //remote data sources
 
