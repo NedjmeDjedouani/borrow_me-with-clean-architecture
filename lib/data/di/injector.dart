@@ -48,7 +48,7 @@ class AppBindings implements Bindings {
     Get.put<NetworkInfo>(NetworkInfoImpl());
     Get.put<ApiConsumer>(DioConsumer());
     Get.put<LocalDatabase>(LocalDatabase());
-
+    Get.put<ClientCache>(ClientCache(Get.find()));
     //local data sources
 
     Get.put<OrderLocalDataSource>(

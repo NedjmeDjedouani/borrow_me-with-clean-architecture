@@ -39,6 +39,8 @@ dev_dependencies:
   json_serializable: ^6.7.0
   flutter_lints: ^2.0.2
   mockito: ^5.4.2
+  integration_test:
+    sdk: flutter
 
 flutter_native_splash:
   background_image: "assets/splash.png"

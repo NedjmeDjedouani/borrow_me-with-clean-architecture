@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:test_app/core/utils/app_colors.dart';
-import '../../core/utils/constants.dart';
-import '../../data/di/injector.dart';
-import 'login.dart';
+import 'core/utils/constants.dart';
+import 'data/di/injector.dart';
+import 'presentation/screens/login.dart';
 
 void main() {
   runApp(const Myapp());

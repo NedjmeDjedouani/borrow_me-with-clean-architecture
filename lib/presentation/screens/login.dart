@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:test_app/core/utils/app_strings.dart';
+import 'package:test_app/core/utils/widgetskeys.dart';
 import '../../core/utils/constants.dart';
 import 'home_page.dart';
 
@@ -36,7 +37,7 @@ class LoginState extends State<Login> {
                         painter: MyCustomPaint(),
                       ),
                     ), */
-                    TextFormField(
+                    TextFormField(key: const ValueKey(WidgetsKeys.usernameTextField),
                       textInputAction: TextInputAction.next,
                       validator: (val) {
                         return val == username ? null : AppStrings.notValid;
@@ -47,7 +48,7 @@ class LoginState extends State<Login> {
                       ),
                     ),
                     const SizedBox(height: sizedboxheight),
-                    TextFormField(
+                    TextFormField(key: const ValueKey( WidgetsKeys.passwordTextField),
                       validator: (val) {
                         return val == password ? null : AppStrings.notValid;
                       },

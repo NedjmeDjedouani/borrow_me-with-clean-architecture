@@ -6,8 +6,8 @@ import '../../models/client.dart';
 import '../source/client_local_datasource.dart';
 
 class ClientCache {
-  LocalDatabase localDatabase = LocalDatabase();
-
+  ClientCache(this.localDatabase);
+  LocalDatabase localDatabase;
   Future<int> addClient(ClientEntity client) async {
     return await localDatabase.into(localDatabase.clientLocalModel).insert(
         ClientLocalModelCompanion.insert(
@@ -78,8 +78,7 @@ class ClientLocalDatatSourceImp implements ClientLocalDataSource {
 
   @override
   Future<List<ClientModel>> getAllClients() async {
-    final listofClients =
-        await localDatabase.getAllClients();
+    final listofClients = await localDatabase.getAllClients();
     List<ClientModel> listofClientsModels = [];
     for (var element in listofClients) {
       listofClientsModels.add(_clientEntityMapper.cachedToMap(element));
@@ -89,8 +88,7 @@ class ClientLocalDatatSourceImp implements ClientLocalDataSource {
 
   @override
   getClient(String clientId) async {
-    final clientModel =
-        await localDatabase.getClient(clientId);
+    final clientModel = await localDatabase.getClient(clientId);
     return _clientEntityMapper.cachedToMap(clientModel);
   }
 
